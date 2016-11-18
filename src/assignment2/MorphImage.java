@@ -10,162 +10,145 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 
 /**
- * Program that morphs an image by changing it's raster values.
+ * Program that morphs an image by changing it's individual pixel values.
+ * 
  * 
  * @author Anton Gustafsson
  *
  */
 public class MorphImage {
-	private final String URL0 = "pic1.jpg";
-	private final String URL1 = "template1.png";
-	private final String URL2 = "template2.png";
-	private final String URL3 = "template3.png";
+	private final int MAX = 255;
+	private final int MIN = 0;
 
 	public static void main(String[] args) {
-		try {
 			new MorphImage();
-		} catch (IOException | URISyntaxException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public MorphImage() throws IOException, URISyntaxException {
-		//A
-		BufferedImage img0 = readImage(URL0);
-		float contrast = 1.2f; // 1 is standard
-		int brightness = 3; // 1 is standard
-		// pointOp(img0, contrast, brightness);
-		//B
-		BufferedImage img1 = readImage(URL1);
-		BufferedImage img2 = readImage(URL2);
-		BufferedImage img3 = readImage(URL3);
-		mergeImages(img1, img2, img3);
 	}
 
 	/**
-	 * Read and create a bufferedImage from an URL.
-	 * 
-	 * @param URL
-	 * @return
-	 * @throws URISyntaxException
+	 * Constructor that calls on A method and B method.
 	 */
-	private BufferedImage readImage(String URL) throws URISyntaxException {
-		
-		URL defaultImage = MorphImage.class.getResource(URL);
-		File file = new File(defaultImage.toURI());
+	public MorphImage() {
+		String URL0 = "mushroom.png";
+		String URL1 = "template1.png";
+		String URL2 = "template2.png";
+		float contrast = 1.2f; // 1 is standard
+		int brightness = 3; // 1 is standard
+
+		// A
+		pointOp(URL0, contrast, brightness);
+		// B
+		mergeImages(URL1, URL2);
+	}
+
+	/**
+	 * Multiplies and adds a constant value to every pixel to alter the image's
+	 * brightness and contrast.
+	 * 
+	 * @param URL - the filepath for the image to alter.
+	 * @param contrast - the contrast to multiply each pixel with.
+	 * @param brightness - the value to add each pixel with.
+	 */
+	private void pointOp(String URL, float contrast, int brightness) {
+		BufferedImage img = readImage(URL);
+		int width = img.getWidth();
+		int height = img.getHeight();
+		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		WritableRaster inraster = img.getRaster();
+		WritableRaster outraster = image.getRaster();
+		int[] pixel = new int[3];
+		for (int i = 0; i < width; i++)
+			for (int j = 0; j < height; j++) {
+				int valueR = inraster.getSample(i, j, 0);
+				int valueG = inraster.getSample(i, j, 1);
+				int valueB = inraster.getSample(i, j, 2);
+
+				pixel = inraster.getPixel(i, j, new int[3]);
+				pixel[0] = (int) ((contrast * valueR) + brightness);
+				pixel[1] = (int) ((contrast * valueG) + brightness);
+				pixel[2] = (int) ((contrast * valueB) + brightness);
+
+				// Check if we are above or belov max and min limit.
+				for (int x = 0; x < 3; x++) {
+					if (pixel[x] > MAX)
+						pixel[x] = MAX;
+					else if (pixel[x] < MIN)
+						pixel[x] = MIN;
+				}
+				outraster.setPixel(i, j, pixel);
+			}
+		writeImage(image, "JPG", "BrightContrast" + URL);
+	}
+
+	/**
+	 * Merges 2 grayscale images pixel values and creates a new image with them.
+	 * 
+	 * @param URLA - the filepath of the first image.
+	 * @param URLB - the filepath of the second image.
+	 */
+	private void mergeImages(String URLA, String URLB) {
+		BufferedImage img0 = readImage(URLA);
+		BufferedImage img1 = readImage(URLB);
+
+		int width = img0.getWidth();
+		int height = img0.getHeight();
+
+		WritableRaster inraster0 = img0.getRaster();
+		WritableRaster inraster1 = img1.getRaster();
+
+		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_BINARY);
+		WritableRaster outraster = image.getRaster();
+
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+
+				int valueA0 = inraster0.getSample(i, j, 0);
+				int valueA1 = inraster1.getSample(i, j, 0);
+				int newValue = valueA0 + valueA1;
+
+				// Check if we are above or belov max and min limit.
+				if (newValue > MAX) {
+					newValue = MAX;
+				} else if (newValue < MIN) {
+					newValue = MIN;
+				}
+				outraster.setSample(i, j, 0, newValue);
+			}
+		}
+		writeImage(image, "png", "MergedImages" + URLA);
+	}
+
+	/**
+	 * Uses a URL to read an image into a file.
+	 * 
+	 * @param URL - the filepath of the image.
+	 * @return BufferedImage - a BufferedImage object of an image.
+	 */
+	private BufferedImage readImage(String URL) {
 		BufferedImage img = null;
+
+		URL defaultImage = MorphImage.class.getResource(URL);
 		try {
+			File file = new File(defaultImage.toURI());
 			img = ImageIO.read(file);
-		} catch (IOException e) {
+		} catch (IOException | URISyntaxException e) {
 			e.printStackTrace();
 		}
 		return img;
 	}
 
 	/**
-	 * Uses a BufferedImage to create a new copy of it with altered brightness
-	 * and contrast
+	 * Creates a new image file from the given BufferedImage.
 	 * 
-	 * @param img
-	 * @throws IOException
+	 * @param img - BufferedImage that will get written.
+	 * @param fileExt - file extension to the new file.
+	 * @param title - name and filepath to the new file.
 	 */
-	private void pointOp(BufferedImage img0, float contrast, int brightness) throws IOException {
-		int width = img0.getWidth();
-		int height = img0.getHeight();
-		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-		WritableRaster inraster = img0.getRaster();
-		WritableRaster outraster = image.getRaster();
-		int[] pixel = new int[3];
-		for (int i = 0; i < width; i++)
-			for (int j = 0; j < height; j++) {
-				// System.out.println(valueR);
-				// System.out.println(valueG);
-				// System.out.println(valueB);
-
-				// outraster.setSample(i, j, 0, (brig * valueR) + brig);
-				// outraster.setSample(i, j, 1, (brig * valueG) + brig);
-				// outraster.setSample(i, j, 2, (brig * valueB) + brig);
-				
-				int valueR = inraster.getSample(i, j, 0);
-				int valueG = inraster.getSample(i, j, 1);
-				int valueB = inraster.getSample(i, j, 2);
-				pixel = inraster.getPixel(i, j, new int[3]);
-
-				pixel[0] = (int) ((contrast * valueR) + brightness);
-				pixel[1] = (int) ((contrast * valueG) + brightness);
-				pixel[2] = (int) ((contrast * valueB) + brightness);
-
-				//Checks if we are below 0 or above 255.
-				if (pixel[0] > 255)
-					pixel[0] = 255;
-				else if (pixel[0] < 0)
-					pixel[0] = 0;
-
-				if (pixel[1] > 255)
-					pixel[1] = 255;
-				else if (pixel[1] < 0)
-					pixel[1] = 0;
-
-				if (pixel[2] > 255)
-					pixel[2] = 255;
-				else if (pixel[2] < 0)
-					pixel[2] = 0;
-
-				outraster.setPixel(i, j, pixel);
-			}
-
-		ImageIO.write(image, "jpg", new File("BrightContrast" + URL0));
-		System.out.println("Altered brightness and contrast.");
-	}
-
-	/**
-	 * Merges 3 images with alpha channel.
-	 * 
-	 * @param img1
-	 * @param img2
-	 * @param img3
-	 */
-	private void mergeImages(BufferedImage img0, BufferedImage img1, BufferedImage img2) {
-		int width0 = img0.getWidth();
-		int height0 = img0.getHeight();
-		WritableRaster inraster0 = img0.getRaster();
-
-		int width1 = img1.getWidth();
-		int height1 = img1.getHeight();
-		WritableRaster inraster1 = img1.getRaster();
-
-		// int width2 = img2.getWidth();
-		// int height2 = img2.getHeight();
-		// WritableRaster inraster2 = img2.getRaster();
-
-		BufferedImage image = new BufferedImage(width0, height0, BufferedImage.TYPE_BYTE_BINARY);
-		WritableRaster outraster = image.getRaster();
-
-		/**
-		 * Now we got RGB values for all pixels 
-		 */
-		for (int i = 0; i < width0; i++) {
-			for (int j = 0; j < height0; j++) {
-
-				int valueA0 = inraster0.getSample(i, j, 0);
-				int valueA1 = inraster1.getSample(i, j, 0);
-				int newAlpha = valueA0 + valueA1;
-
-				if (newAlpha > 255) {
-					newAlpha = 255;
-				} else if (newAlpha < 0) {
-					newAlpha = 0;
-				}
-				outraster.setSample(i, j, 0, newAlpha);
-			}
-		}
-
+	private void writeImage(BufferedImage img, String fileExt, String title) {
 		try {
-			ImageIO.write(image, "PNG", new File("MergedImages " + URL0));
-			System.out.println("Merged three images.");
+			ImageIO.write(img, fileExt, new File(title));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		System.out.println("Morphed image: " + title);
 	}
-
 }
