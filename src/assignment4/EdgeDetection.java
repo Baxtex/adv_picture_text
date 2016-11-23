@@ -18,7 +18,7 @@ public class EdgeDetection {
 	}
 
 	public EdgeDetection() {
-		String url0 = "ernst_pic1.jpg";
+		String url0 = "mushroom.png";
 		detect(url0);
 	}
 
@@ -69,7 +69,7 @@ public class EdgeDetection {
 				}
 				int q = (int) Math.round(sum / 9.0);
 				
-				if(q<150){
+				if(q<170){
 					q = 0;
 				}else{
 					q = 255;
@@ -78,7 +78,7 @@ public class EdgeDetection {
 				outraster.setSample(i, j, 0, q);
 			}
 		}
-		writeImage(resImage, "jpg", "Smoothed " + url);
+		writeImage(resImage, "png", "EdgeDetection " + url);
 	}
 
 	/**
