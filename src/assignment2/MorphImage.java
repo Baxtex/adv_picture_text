@@ -76,7 +76,7 @@ public class MorphImage {
 				}
 				outraster.setPixel(i, j, pixel);
 			}
-		writeImage(image, "JPG", "BrightContrast" + URL);
+		writeImage(image, "JPG", "BrightContrast " + URL);
 	}
 
 	/**
@@ -114,7 +114,7 @@ public class MorphImage {
 				outraster.setSample(i, j, 0, newValue);
 			}
 		}
-		writeImage(image, "png", "MergedImages" + URLA);
+		writeImage(image, "png", "MergedImages " + URLA);
 	}
 
 	/**
@@ -149,6 +149,6 @@ public class MorphImage {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("Morphed image: " + title);
+		System.out.println("Morphed image: " +"src/assignment2/"+ title);
 	}
 }
