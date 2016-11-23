@@ -28,16 +28,16 @@ public class MorphImage {
 	 * Constructor that calls on A method and B method.
 	 */
 	public MorphImage() {
-		String URL0 = "mushroom.png";
-		String URL1 = "template1.png";
-		String URL2 = "template2.png";
+		String url0 = "mushroom.png";
+		String url1 = "template1.png";
+		String url2 = "template2.png";
 		float contrast = 1.2f; // 1 is standard
 		int brightness = 3; // 1 is standard
 
 		// A
-		pointOp(URL0, contrast, brightness);
+		pointOp(url0, contrast, brightness);
 		// B
-		mergeImages(URL1, URL2);
+		mergeImages(url1, url2);
 	}
 
 	/**

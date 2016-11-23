@@ -11,16 +11,21 @@ import javax.imageio.ImageIO;
 
 import assignment2.MorphImage;
 
-public class ContureDetection {
-	public ContureDetection() {
-		String URL0 = "ernst_pic1.jpg";
-		detect(URL0);
-	}
+public class EdgeDetection {
 
 	public static void main(String[] args) {
-		new ContureDetection();
+		new EdgeDetection();
 	}
 
+	public EdgeDetection() {
+		String url0 = "ernst_pic1.jpg";
+		detect(url0);
+	}
+
+	/**
+	 * Detects edges.
+	 * @param url - filepath to the iamge.
+	 */
 	private void detect(String url) {
 		BufferedImage orgImage = readImage(url);
 		int width = orgImage.getWidth();
@@ -69,7 +74,7 @@ public class ContureDetection {
 				}else{
 					q = 255;
 				}
-				System.out.println("q: " + q);
+//				System.out.println("q: " + q);
 				outraster.setSample(i, j, 0, q);
 			}
 		}
