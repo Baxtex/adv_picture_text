@@ -18,15 +18,18 @@ public class TestFindWord {
 	}
 
 	public TestFindWord() {
-		System.out.println("Welcome to the pattern finder!");
-
-		String text = "In this approach, we avoid backtracking by constructing a deterministic finite automaton (DFA) that recognizes stored search string. These are expensive to construct—they are usually created using the powerset construction—but are very quick to use. For example, the DFA shown to the right recognizes the word MOMMY. This approach is frequently generalized in practice to search for arbitrary regular expressions.";
-		String pattern = "approach ";
+		String text = "In this approach, we avoid backtracking by constructing a deterministic finite automaton (DFA) that recognizes stored search string. These are expensive to construct—they are usually created using the powerset construction—but are very quick to use. For example, the DFA shown to the right recognizes the word . This approach is frequently generalized in practice to search for arbitrary regular expressions.";
+		String pattern = "ffff";
 
 		for (int i = 0; i < 5; i++) {
-
 			long startTime = System.nanoTime();
-			System.out.println("Did your pattern exist?: " + rabinKarp(text, pattern)); //choose method here
+			// Uncomment which method to use here
+
+			// System.out.println("Did your pattern exist?: " +
+			// naiveSearch(text, pattern));
+			System.out.println("Did your pattern exist?: " + rabinKarp(text, pattern));
+			// System.out.println("Did your pattern exist?: " +
+			// knuthMorrisPratt(text, pattern));
 			long endTime = System.nanoTime();
 			long duration = (endTime - startTime);
 
@@ -37,11 +40,9 @@ public class TestFindWord {
 			System.out.println(innerIterations + outerIterations);
 			innerIterations = 0;
 			outerIterations = 0;
-
 		}
 		totalNS = totalNS / 5;
 		System.out.println("Average ns is : " + totalNS);
-
 	}
 
 	/**
@@ -78,6 +79,73 @@ public class TestFindWord {
 				}
 			}
 		}
+		return false;
+	}
+
+	/**
+	 * Searches for a pattern in the text using Rabin Karp algorithm. Hashes the
+	 * pattern and compares them.
+	 * http://www.geeksforgeeks.org/searching-for-patterns-set-3-rabin-karp-algorithm/
+	 * 
+	 * @return - true if we got a match.
+	 */
+	private boolean rabinKarp(String text, String pattern) {
+		char[] txt = text.toCharArray();
+		char[] patt = pattern.toCharArray();
+		int sigmaLen = 256;
+		int prime = 101;
+		int pattLen = patt.length;
+		int txtLen = txt.length;
+		int pattHash = 0;
+		int txtHash = 0;
+		int i, j;
+		int h = 1;
+
+		 // The value of h would be "pow(d, M-1)%q"
+	    for (i = 0; i < pattLen-1; i++)
+	        h = (h*sigmaLen)%prime;
+	 
+	    // Calculate the hash value of pattern and first
+	    // window of text
+	    for (i = 0; i < pattLen; i++)
+	    {
+	        pattHash = (sigmaLen*pattHash + patt[i])%prime;
+	        txtHash = (sigmaLen*txtHash + txt[i])%prime;
+	    }
+	 
+	    // Slide the pattern over text one by one
+	    for (i = 0; i <= txtLen - pattLen; i++)
+		{
+			innerIterations++;
+	        // Check the hash values of current window of text
+	        // and pattern. If the hash values match then only
+	        // check for characters on by one
+	        if ( pattHash == txtHash )
+	        {
+	            /* Check for characters one by one */
+	            for (j = 0; j < pattLen; j++)
+	            {
+					outerIterations++;
+	                if (txt[i+j] != patt[j])
+	                    break;
+	            }
+	            // pattern is found.
+	            if (j == pattLen){	
+	            	return true;
+	            }
+	        }
+	 
+	        // Calculate hash value for next window of text: Remove
+	        // leading digit, add trailing digit
+	        if ( i < txtLen-pattLen )
+	        {
+	            txtHash = (sigmaLen*(txtHash - txt[i]*h) + txt[i+pattLen])%prime;
+	            // We might get negative value of t, converting it
+	            // to positive
+	            if (txtHash < 0)
+	            txtHash = (txtHash + prime);
+	        }
+	    }
 		return false;
 	}
 
@@ -131,71 +199,4 @@ public class TestFindWord {
 		return arr;
 	}
 
-	/**
-	 * Searches for a pattern in the text using Rabin Karp algorithm. Hashes the
-	 * pattern and compares it.
-	 * http://www.geeksforgeeks.org/searching-for-patterns-set-3-rabin-karp-algorithm/
-	 * 
-	 * @return
-	 */
-	private boolean rabinKarp(String text, String pattern) {
-		char[] txt = text.toCharArray();
-		char[] patt = pattern.toCharArray();
-		int sigmaLen = 256;
-		int prime = 101; //primenumber
-		int pattLen = patt.length;
-		int txtLen = txt.length;
-		int pattHash = 0; // hash value for pattern
-		int txtHash = 0; // hash value for txt
-		int h = 1;
-		int i, j;
-		innerIterations++;
-		outerIterations++;
-
-		 // The value of h would be "pow(d, M-1)%q"
-	    for (i = 0; i < pattLen-1; i++)
-	        h = (h*sigmaLen)%prime;
-	 
-	    // Calculate the hash value of pattern and first
-	    // window of text
-	    for (i = 0; i < pattLen; i++)
-	    {
-	        pattHash = (sigmaLen*pattHash + patt[i])%prime;
-	        txtHash = (sigmaLen*txtHash + txt[i])%prime;
-	    }
-	 
-	    // Slide the pattern over text one by one
-	    for (i = 0; i <= txtLen - pattLen; i++)
-	    {
-	 
-	        // Check the hash values of current window of text
-	        // and pattern. If the hash values match then only
-	        // check for characters on by one
-	        if ( pattHash == txtHash )
-	        {
-	            /* Check for characters one by one */
-	            for (j = 0; j < pattLen; j++)
-	            {
-	                if (txt[i+j] != patt[j])
-	                    break;
-	            }
-	            // pattern is found.
-	            if (j == pattLen){	
-	            	return true;
-	            }
-	        }
-	 
-	        // Calculate hash value for next window of text: Remove
-	        // leading digit, add trailing digit
-	        if ( i < txtLen-pattLen )
-	        {
-	            txtHash = (sigmaLen*(txtHash - txt[i]*h) + txt[i+pattLen])%prime;
-	            // We might get negative value of t, converting it
-	            // to positive
-	            if (txtHash < 0)
-	            txtHash = (txtHash + prime);
-	        }
-	    }
-		return false;
-	}
 }

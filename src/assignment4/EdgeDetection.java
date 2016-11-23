@@ -18,7 +18,7 @@ public class EdgeDetection {
 	}
 
 	public EdgeDetection() {
-		String url0 = "mushroom.png";
+		String url0 = "ernst_pic1.png";
 		detect(url0);
 	}
 
@@ -78,7 +78,7 @@ public class EdgeDetection {
 				outraster.setSample(i, j, 0, q);
 			}
 		}
-		writeImage(resImage, "png", "EdgeDetection " + url);
+		writeImage(resImage, "jpg", "EdgeDetection " + url);
 	}
 
 	/**
