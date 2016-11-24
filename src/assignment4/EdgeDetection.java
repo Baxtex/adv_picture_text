@@ -18,7 +18,7 @@ public class EdgeDetection {
 	}
 
 	public EdgeDetection() {
-		String url0 = "ernst_pic1.png";
+		String url0 = "valve.png";
 		detect(url0);
 	}
 
@@ -49,19 +49,6 @@ public class EdgeDetection {
 						
 						int sum1 = i+y;
 						int sum2 = j+x;
-						
-//						if(sum1 <= 0|| sum1 >=height){
-//							sum1 = 0;
-//							System.out.println("BREAKING");
-//							break;
-//						}
-//						if(sum2 <= 0 || sum2 >=height){
-//							sum2 = 0;
-//							System.out.println("BREAKING");
-//							break;
-//						}
-						
-//						System.out.println("(" + sum1 +", "+sum2 + ")");
 					
 						int p = inraster.getSample(sum1, sum2, 0);
 						sum = sum + p;
@@ -69,16 +56,15 @@ public class EdgeDetection {
 				}
 				int q = (int) Math.round(sum / 9.0);
 				
-				if(q<170){
+				if(q<150){
 					q = 0;
 				}else{
 					q = 255;
 				}
-//				System.out.println("q: " + q);
 				outraster.setSample(i, j, 0, q);
 			}
 		}
-		writeImage(resImage, "jpg", "EdgeDetection " + url);
+		writeImage(resImage, "png", "EdgeDetection " + url);
 	}
 
 	/**
