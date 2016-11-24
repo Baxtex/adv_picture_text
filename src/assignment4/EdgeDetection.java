@@ -13,17 +13,24 @@ import assignment2.MorphImage;
 
 public class EdgeDetection {
 
+	private final int THRESHOLD = 65;// Decides at which threshold for black and
+										// white. Needs modifying for different
+										// images.
+	private final int MAX = 255;// Represent white;
+	private final int MIN = 0;// Represent black;
+
 	public static void main(String[] args) {
 		new EdgeDetection();
 	}
 
 	public EdgeDetection() {
-		String url0 = "valve.png";
+		String url0 = "rubik.jpg";
 		detect(url0);
 	}
 
 	/**
 	 * Detects edges.
+	 * 
 	 * @param url - filepath to the iamge.
 	 */
 	private void detect(String url) {
@@ -34,37 +41,35 @@ public class EdgeDetection {
 		WritableRaster inraster = orgImage.getRaster();
 		WritableRaster outraster = resImage.getRaster();
 
-		
-		System.out.println("size: " + width + "X" + height);
-		// Loop through every pixel, ignores the edges as these will throw out of
-		//bounds.
-		for (int i = 1; i < width-2; i++) {
-			for (int j = 1; j < height-2; j++) {
+		System.out.println("Size: " + width + "X" + height + "Pixels");
+		// Loop through every pixel, ignores the edges as these will throw out
+		// of
+		// bounds.
+		for (int i = 1; i < width - 2; i++) {
+			for (int j = 1; j < height - 2; j++) {
 
 				// Compute filter result, loops over in a
 				// box pattern.
 				int sum = 0;
 				for (int x = -1; x <= 1; x++) {
 					for (int y = -1; y <= 1; y++) {
-						
-						int sum1 = i+y;
-						int sum2 = j+x;
-					
-						int p = inraster.getSample(sum1, sum2, 0);
+						int jy = i + y;
+						int jx = j + x;
+						int p = inraster.getSample(jy, jx, 0);
 						sum = sum + p;
 					}
 				}
 				int q = (int) Math.round(sum / 9.0);
-				
-				if(q<150){
-					q = 0;
-				}else{
-					q = 255;
+				if (q > THRESHOLD) {
+					q = MIN;
+				} else {
+					q = MAX;
 				}
 				outraster.setSample(i, j, 0, q);
 			}
 		}
-		writeImage(resImage, "png", "EdgeDetection " + url);
+
+		writeImage(resImage, "jpg", "EdgeDetection " + url);
 	}
 
 	/**
@@ -76,7 +81,7 @@ public class EdgeDetection {
 	private BufferedImage readImage(String URL) {
 		BufferedImage img = null;
 
-		URL defaultImage = MorphImage.class.getResource(URL);
+		URL defaultImage = EdgeDetection.class.getResource(URL);
 		try {
 			File file = new File(defaultImage.toURI());
 			img = ImageIO.read(file);
@@ -99,7 +104,7 @@ public class EdgeDetection {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("Morphed image: " + title);
+		System.out.println("DONE");
 	}
 
 }
