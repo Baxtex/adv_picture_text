@@ -55,14 +55,14 @@ public class MorphImage {
 		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		WritableRaster inraster = img.getRaster();
 		WritableRaster outraster = image.getRaster();
-		int[] pixel = new int[3];
+		int[] pixel;
 		for (int i = 0; i < width; i++)
 			for (int j = 0; j < height; j++) {
 				int valueR = inraster.getSample(i, j, 0);
 				int valueG = inraster.getSample(i, j, 1);
 				int valueB = inraster.getSample(i, j, 2);
 
-				pixel = inraster.getPixel(i, j, new int[3]);
+				pixel = new int[3];
 				pixel[0] = (int) ((contrast * valueR) + brightness);
 				pixel[1] = (int) ((contrast * valueG) + brightness);
 				pixel[2] = (int) ((contrast * valueB) + brightness);
