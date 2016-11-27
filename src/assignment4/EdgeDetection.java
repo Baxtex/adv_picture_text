@@ -18,7 +18,7 @@ public class EdgeDetection {
 										// images.
 	private final int MAX = 255;// Represent white;
 	private final int MIN = 0;// Represent black;
-
+	private int counter = 0;
 	public static void main(String[] args) {
 		new EdgeDetection();
 	}
@@ -41,7 +41,7 @@ public class EdgeDetection {
 		WritableRaster inraster = orgImage.getRaster();
 		WritableRaster outraster = resImage.getRaster();
 
-		System.out.println("Size: " + width + "X" + height + "Pixels");
+		System.out.println("Size: " + width + "X" + height + "Pixels ");
 		// Loop through every pixel, ignores the edges as these will throw out
 		// of
 		// bounds.
@@ -57,6 +57,7 @@ public class EdgeDetection {
 						int jx = j + x;
 						int p = inraster.getSample(jy, jx, 0);
 						sum = sum + p;
+						counter++;
 					}
 				}
 				int q = (int) Math.round(sum / 9.0);
@@ -68,7 +69,7 @@ public class EdgeDetection {
 				outraster.setSample(i, j, 0, q);
 			}
 		}
-
+System.out.println("Iterations " + counter);
 		writeImage(resImage, "jpg", "EdgeDetection " + url);
 	}
 
