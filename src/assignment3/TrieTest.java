@@ -5,6 +5,11 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Tests the trie.
+ * @author Anton Gustafsson
+ *
+ */
 public class TrieTest {
 
 	  private Trie trie;
@@ -12,21 +17,23 @@ public class TrieTest {
 	    @Before
 	    public void setUp() {
 	        trie = new Trie();
-	        trie.add("at");
-	        trie.add("Hello");
-	        trie.add("Been");
+	        trie.add("cat");
+	        trie.add("car");
+	        trie.add("craft");
 	        trie.add("yes");
-	        trie.add("water");
-	        trie.add("be");
+	        trie.add("yesterday");
+	        trie.add("good");
 	    }
 
 	    @Test
 	    public void testInsert() {
 
-	        assertTrue(trie.find("water"));
-	        assertTrue(trie.find("at"));
-	        assertFalse(trie.find("Beat"));
-	        assertFalse(trie.find("Test"));
+	        assertTrue(trie.find("cat"));
+	        assertTrue(trie.find("car"));
+	        assertTrue(trie.find("craft"));
+	        assertTrue(trie.find("yes"));
+	        assertFalse(trie.find("lol"));
+	        assertFalse(trie.find("carri"));
 	    }
 
 }

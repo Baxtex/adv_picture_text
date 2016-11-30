@@ -26,9 +26,6 @@ public class Node {
 		this.text = text;
 	}
 	
-	public LinkedList<Node> getChildren(){
-		return children;
-	}
 	public boolean isWord() {
 		return isWord;
 	}
@@ -45,6 +42,10 @@ public class Node {
 		this.text = text;
 	}
 	
+	public LinkedList<Node> getChildren() {
+		return children;
+	}
+
 	@Override
 	public String toString(){
 		return text;

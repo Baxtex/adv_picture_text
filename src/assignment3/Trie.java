@@ -6,15 +6,7 @@ import java.util.LinkedList;
 /**
  * Trie datastructure that is a tree datastructure for strings.
  * 
- * @author Anton Gustafsson Implementera en trie-datastruktur. Den ska stödja
- * operationerna sätt in sträng och sök exakt sträng. Övriga operationer (som
- * borttagning) är frivilliga. Diskutera tidskomplexiteten i er implementation.
- * Implementera en suffixdatastruktur, antingen ett suffixträd eller en
- * suffixvektor. Den ska stödja operationerna bygg, givet en text (som kan vara
- * en konstruktor om ni så önskar), och sök upp längsta prefix, givet en
- * sökmönstersträng. Diskutera tidskomplexiteten i er implementation. Det finns
- * inget krav på att den ska vara optimal, en rimlig tidskomplexitet för en naiv
- * implementation är tillräcklig.
+ * @author Anton Gustafsson
  */
 public class Trie {
 
@@ -32,37 +24,40 @@ public class Trie {
 	/**
 	 * Adds a new word to the trie.
 	 * 
-	 * @param word
-	 * @return
+	 * @param word - String the word to add.
+	 * @return true if we are done adding.
 	 */
 	public boolean add(String word) {
+		System.out.println("adding " +"'"+ word+"'");
 		Node curr = root;
 		if (curr == null || word == null) {
 			return false;
 		}
-		LinkedList<Node> children = curr.getChildren();
 		int i = 0;
 		char[] chars = word.toCharArray();
-		int charsSize = chars.length - 1;
+
 		// Loop through all letters in the word.
 		while (i < chars.length) {
-			// If the children nodes does not contain the letter at i.
-			if (!children.contains(chars[i])) {
-				// Insert a new node
-				insertChar(curr, chars[i]);
-				// if we have traversed all letts.
-				if (i == charsSize) {
-					// Get the child and set word to true ie we have found it.
+			LinkedList<Node> children = curr.getChildren();
+			System.out.println("Current char is " + chars[i]);
+			
+			//If the node does not exists, add it.
+			if (!childContain(children, String.valueOf(chars[i]))) {
+				System.out.println("Can't find this char, adding node...");
+				insertNode(curr, chars[i]);
+				
+				// if we have traversed all letters and reached the leaf
+				if (i == chars.length - 1) {
+					System.out.println("END OF LINE; SET IT TO TRUE--------------");
 					getChild(curr, chars[i]).setWord(true);
 					size++;
 					return true;
 				}
 			}
-			// get the current child.
+			// Get the new child.
 			curr = getChild(curr, chars[i]);
-			// If the current childs text is equal the word or not the word.
+			//If the word matches and it has not been set to true, do it.
 			if (curr.getText().equals(word) && !curr.isWord()) {
-				// set the current word to true.
 				curr.setWord(true);
 				size++;
 				return true;
@@ -74,58 +69,63 @@ public class Trie {
 
 	/**
 	 * Returns true if the given string is found.
-	 * TODO: FIX!
-	 * @param str
-	 * @return
+	 * @param s - the string to find.
+	 * @return - true if the string exists.
 	 */
-	
-	//Vi letar efter Beat, som inte finns.
-	public boolean find(String str) {
-		System.out.println(str);
-		System.out.println("-----------------------------------------");
-		
-		LinkedList<Node> children = root.getChildren();
-		Node node = null;
-		char[] chars = str.toCharArray();
-		//Loop over all letters.
-		for (int i = 0; i < chars.length; i++) {
-			char c = chars[i];
-			//If child contains c.
-			if (childContain(children, c)) {
-				System.out.println("DET FINNS");
-				//get the child and it's children.
-				node = getChild(root, c);
-				children = node.getChildren();
-			} else {
-				System.out.println("DET FINNS INGET");
-				return false;
-			}
-		}
-		return true;
+	public boolean find(String s) {
+
+	    LinkedList<Node> children = root.getChildren();
+	    // start the node at the root
+	    Node node = root;
+	    char[] chars = s.toCharArray();
+	    //Loop over all letters.
+	    for (int i = 0; i < chars.length; i++) {
+	        char c = chars[i];
+	        //If child contains c.
+	        if (childContain(children, String.valueOf(c))) {
+	            //get the child *of the node, not root* and it's children.
+	            node = getChild(node, c);
+
+	            // there are better ways to handle this, but I think this explicitly shows what the situations is
+	            if (node == null) {
+	                // we have reached a node that does not have children
+	                if (i == chars.length - 1) {
+	                    // we are at the end of the word - it is found
+	                    return true;
+	                } else {
+	                    // we are in the middle of the word - it is not present
+	                    return false;
+	                }
+	            }
+	            // if we have reached the end of the word this will cause NullPointer
+	            children = node.getChildren();
+
+	        } else {
+	            return false;
+	        }
+	    }
+	    return true;
 	}
-
+	
 	/**
-	 * Inserts a new Node with a char.
+	 * Inserts a new Node with a given char.
 	 * 
-	 * @param node
-	 * @param c
-	 * @return
+	 * @param node - the old node.
+	 * @param c - the character to add.
 	 */
-	private Node insertChar(Node node, Character c) {
-		if (childContain(node.getChildren(), c)) {
-			return null;
+	private void insertNode(Node node, Character c) {
+		if (childContain(node.getChildren(), String.valueOf(c))) {
+			return;
 		}
-
-		Node next = new Node(node.getText() + c.toString());
+		Node next = new Node(c.toString());
 		node.getChildren().add(next);
-		return next;
 	}
 
 	/**
 	 * Retrieves a given node's child with the character c
 	 * 
-	 * @param trie
-	 * @param c
+	 * @param node - the node to get children from.
+	 * @param c - the character we want to check.
 	 * @return
 	 */
 	private Node getChild(Node node, Character c) {
@@ -133,33 +133,42 @@ public class Trie {
 		Iterator<Node> iter = list.iterator();
 		while (iter.hasNext()) {
 			Node n = iter.next();
-			if (n.getText().equals(String.valueOf(c)));
+			if (n.getText().equals(String.valueOf(c)))
 			{
+				System.out.println("Returning child with '" + c + "' as it's text");
 				return n;
 			}
 		}
-		System.out.println("Returning null"); // This could never happen
 		return null;
 	}
 
 	/**
 	 * Checks if any child contains the char c.
 	 * 
-	 * @param list
+	 * @param list - the children to look in,
 	 * @param c
 	 * @return
 	 */
-	private boolean childContain(LinkedList<Node> list, char c) {
-		Iterator<Node> iter = list.iterator();
+	private boolean childContain(LinkedList<Node> children, String c) {
+		
+		if(children.size()>0){
+			
+			System.out.println("List is not empty");
+		}else{
+			
+			System.out.println("List is empty, can't iterate");
+		}
+		
+		Iterator<Node> iter = children.iterator();
 
 		while (iter.hasNext()) {
 			Node n = iter.next();
 			
-			System.out.println("char " + String.valueOf(c) +" lista " + n.getText() + "?");
-			System.out.println(n.getText().equals(String.valueOf(c)));
+			System.out.print("char " + (c) +" lista " + n.getText() + "?  ");
+			System.out.println(n.getText().equals(c));
 			
 			
-			if (n.getText().equals(String.valueOf(c)))
+			if (n.getText().equals(c))
 			{
 				return true;
 			}
