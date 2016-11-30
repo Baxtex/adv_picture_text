@@ -1,17 +1,55 @@
 package assignment3;
 
+import java.util.LinkedList;
+
 /**
  * Represents one node in the tree.
+ * 
  * @author Anton Gustafsson
  *
  */
 
-
 public class Node {
-	private char data;
-	
-	public char getData(){
-		return data;
+
+	private boolean isWord;
+	private String text;
+	private LinkedList<Node> children;
+
+	public Node() {
+		children = new LinkedList<Node>();
+		text = "";
+		isWord = false;
 	}
+
+	public Node(String text) {
+		this();
+		this.text = text;
+	}
+	
+	public LinkedList<Node> getChildren(){
+		return children;
+	}
+	public boolean isWord() {
+		return isWord;
+	}
+
+	public void setWord(boolean isWord) {
+		this.isWord = isWord;
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+	
+	@Override
+	public String toString(){
+		return text;
+	}
+	
+	
 
 }
