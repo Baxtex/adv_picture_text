@@ -1,4 +1,4 @@
-package assignment3;
+package assignment3A;
 
 import static org.junit.Assert.*;
 
