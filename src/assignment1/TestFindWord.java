@@ -25,9 +25,8 @@ public class TestFindWord {
 			long startTime = System.nanoTime();
 			// Uncomment which method to use here
 
-			// System.out.println("Did your pattern exist?: " +
-			// naiveSearch(text, pattern));
-			System.out.println("Did your pattern exist?: " + rabinKarp(text, pattern));
+			System.out.println("Did your pattern exist?: " + naiveSearch(text, pattern));
+//			System.out.println("Did your pattern exist?: " + rabinKarp(text, pattern));
 			// System.out.println("Did your pattern exist?: " +
 			// knuthMorrisPratt(text, pattern));
 			long endTime = System.nanoTime();

@@ -8,7 +8,7 @@ public class SuffixArray {
 
 	/**
 	 * Initilizes the array.
-	 * 
+	 * http://www.sanfoundry.com/java-program-implement-suffix-array/
 	 * @param text
 	 */
 	public SuffixArray(String text) {
@@ -77,9 +77,11 @@ public class SuffixArray {
 	 * Prints the complete array.
 	 */
 	public void printDone() {
-		System.out.println("DONE:");
-		for (int j = 0; j < length; j++) {
-			System.out.println(suffix[j] + "\t" + index[j]);
+		System.out.println("");
+		System.out.println("Build complete, printing array:");
+		System.out.println("Suffix, #prefixes");
+		for (int i = 0; i < length; i++) {
+			System.out.println(suffix[i] + "---------" + index[i]);
 		}
 
 	}

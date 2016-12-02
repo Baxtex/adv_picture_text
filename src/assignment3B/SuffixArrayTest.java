@@ -16,7 +16,7 @@ public class SuffixArrayTest {
 
 	    @Before
 	    public void setUp() {
-	    	st = new SuffixArray("bananas");
+	    	st = new SuffixArray("banana$");
 	    }
 
 	    @Test
