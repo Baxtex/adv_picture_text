@@ -16,14 +16,12 @@ public class SuffixArrayTest {
 
 	    @Before
 	    public void setUp() {
-	    	st = new SuffixArray("banana$");
+	    	st = new SuffixArray("banana");
 	    }
 
 	    @Test
-	    public void testInsert() {
-
-
-
+	    public void testSearch() {
+	    	st.printLongestPrefix("banana");
 	    }
 
 }

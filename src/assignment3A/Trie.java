@@ -23,6 +23,9 @@ public class Trie {
 
 	/**
 	 * Adds a new word to the trie.
+	 * Basicly we check if any of the childen to a node contains the letters
+	 * we are looking for. If not, create a node with that letter. When we are done
+	 * mark the last node(leaf) as the location of the word.
 	 * 
 	 * @param word - String the word to add.
 	 * @return true if we are done adding.
@@ -30,9 +33,6 @@ public class Trie {
 	public boolean add(String word) {
 		System.out.println("adding " + "'" + word + "'");
 		Node curr = root;
-		if (curr == null || word == null) {
-			return false;
-		}
 		int i = 0;
 		char[] chars = word.toCharArray();
 
@@ -46,9 +46,9 @@ public class Trie {
 				System.out.println("Can't find this char, adding node...");
 				insertNode(curr, chars[i]);
 
-				// if we have traversed all letters and reached the leaf
+				// if we have traversed all letters and reached the leaf, mark it as a leaf.
 				if (i == chars.length - 1) {
-					System.out.println("END OF LINE; SET IT TO TRUE--------------");
+					System.out.println("LEAF; SET IT TO TRUE--------------");
 					getChild(curr, chars[i]).setWord(true);
 					size++;
 					return true;
@@ -56,7 +56,7 @@ public class Trie {
 			}
 			// Get the new child.
 			curr = getChild(curr, chars[i]);
-			// If the word matches and it has not been set to true, do it.
+			// If we find the word we are adding already in the trie, mark it so that it has the word.
 			if (curr.getText().equals(word) && !curr.isWord()) {
 				curr.setWord(true);
 				size++;
@@ -76,7 +76,7 @@ public class Trie {
 	public boolean find(String s) {
 		LinkedList<Node> children = root.getChildren();
 		// start the node at the root
-		Node node = root;
+		Node curr = root;
 		char[] chars = s.toCharArray();
 		// Loop over all letters.
 		for (int i = 0; i < chars.length; i++) {
@@ -84,11 +84,10 @@ public class Trie {
 			// If child contains c.
 			if (childContain(children, String.valueOf(c))) {
 				// get the child *of the node, not root* and it's children.
-				node = getChild(node, c);
+				curr = getChild(curr, c);
 
-				// there are better ways to handle this, but I think this
-				// explicitly shows what the situations is
-				if (node == null) {
+		
+				if (curr == null) {
 					// we have reached a node that does not have children
 					if (i == chars.length - 1) {
 						// we are at the end of the word - it is found
@@ -100,7 +99,7 @@ public class Trie {
 				}
 				// if we have reached the end of the word this will cause
 				// NullPointer
-				children = node.getChildren();
+				children = curr.getChildren();
 
 			} else {
 				return false;
