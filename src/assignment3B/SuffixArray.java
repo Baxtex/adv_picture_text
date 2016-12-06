@@ -7,7 +7,7 @@ public class SuffixArray {
 	private int[] index;
 
 	/**
-	 * Initilizes the array.
+	 * Initilizes the arrays.
 	 * http://www.sanfoundry.com/java-program-implement-suffix-array/
 	 * 
 	 * @param text
@@ -42,9 +42,12 @@ public class SuffixArray {
 			System.out.println("Adding suffix to array: " + txt);
 			suffix[i] = txt;
 		}
+		System.out.println("");
+		System.out.println("Before sorting:");
+		printArray();
 
-		// Now all suffixes are added to the suffix array. Now we need to count the nbr of prefixes.
-		// We start from position 1 as the first one is the complete word, and never has a prefix.
+		// Now all suffixes are added to the suffix array. Now we need to sort them.
+		System.out.println(" ");
 		int y;
 		for (int x = 1; x < length; x++) {
 			String key = suffix[x]; // Each suffix, except the first.
@@ -52,31 +55,32 @@ public class SuffixArray {
 
 			// Then we loop from the beginning, starting at 0
 			for (y = x - 1; y >= 0; y--) {
-				System.out.println("back " + y);
+				System.out.println("y- " + y);
 				if (suffix[y].compareTo(key) > 0) {
 					System.out.println(suffix[y] + " is lexicographically less then " + key);
+					System.out.println( suffix[y + 1] + " is set to "+ suffix[y]);
 					suffix[y + 1] = suffix[y];
 					index[y + 1] = index[y];
 				} else {
 					System.out.println(suffix[y] + " is lexicographically greater  or equal " + key);
-					System.out.println("Break");
+					System.out.println("Break, we have found the right place");
 					break;
 				}
-				System.out.println("Suffix: " + suffix[y] + " at " + y);
+				printArray();
 			}
 			System.out.println("New loop");
 			suffix[y + 1] = key;
 			index[y + 1] = keyI;
 		}
-		printDone();
+		System.out.println("");
+		System.out.println("After sorting:");
+		printArray();
 	}
 
 	/**
 	 * Prints the complete array.
 	 */
-	public void printDone() {
-		System.out.println("");
-		System.out.println("Build complete, printing alphabeticly ordered. array:");
+	public void printArray() {
 		System.out.println("Position, Suffix, Old index");
 		for (int i = 0; i < length; i++) {
 			System.out.println( i +" --------- " + suffix[i] + " --------- " + index[i]);
