@@ -155,6 +155,6 @@ public class ImageModifier {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("Morphed image: " + "src/assignment2/" + title);
+		System.out.println("Morphed image: " + title);
 	}
 }

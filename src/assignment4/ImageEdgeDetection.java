@@ -44,7 +44,7 @@ public class ImageEdgeDetection {
 		WritableRaster inraster = orgImage.getRaster();
 		WritableRaster outraster = resImage.getRaster();
 
-		System.out.println("Size: " + width + "X" + height + "Pixels ");
+		System.out.println("Size: " + width + "X" + height + " Pixels ");
 		for (int i = 1; i < width - 2; i++) {
 			for (int j = 1; j < height - 2; j++) {
 
@@ -59,9 +59,8 @@ public class ImageEdgeDetection {
 						sum = sum + p;
 					}
 				}
-
 				int q = (int) Math.round(sum / 9.0);
-				checkMaxMin(q);
+				q = checkMaxMin(q);
 				outraster.setSample(i, j, 0, q);
 			}
 		}
@@ -115,7 +114,7 @@ public class ImageEdgeDetection {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("DONE");
+		System.out.println("Morphed image: " + title);
 	}
 
 }
