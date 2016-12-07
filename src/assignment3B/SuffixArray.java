@@ -8,7 +8,6 @@ public class SuffixArray {
 
 	/**
 	 * Initilizes the arrays.
-	 * http://www.sanfoundry.com/java-program-implement-suffix-array/
 	 * 
 	 * @param text
 	 */

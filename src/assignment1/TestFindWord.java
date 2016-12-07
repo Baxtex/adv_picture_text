@@ -5,7 +5,7 @@ import java.util.Arrays;
 /**
  * Class for finding a specific word.
  * 
- * @author i7
+ * @author Anton Gustafsson
  *
  */
 public class TestFindWord {
@@ -84,7 +84,6 @@ public class TestFindWord {
 	/**
 	 * Searches for a pattern in the text using Rabin Karp algorithm. Hashes the
 	 * pattern and compares them.
-	 * http://www.geeksforgeeks.org/searching-for-patterns-set-3-rabin-karp-algorithm/
 	 * 
 	 * @return - true if we got a match.
 	 */
