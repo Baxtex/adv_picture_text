@@ -1,7 +1,5 @@
 package assignment3B;
 
-import static org.junit.Assert.*;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,5 +21,4 @@ public class SuffixArrayTest {
 	    public void testSearch() {
 	    	st.printLongestPrefix("banana");
 	    }
-
 }

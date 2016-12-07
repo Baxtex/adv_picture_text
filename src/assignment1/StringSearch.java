@@ -3,49 +3,46 @@ package assignment1;
 import java.util.Arrays;
 
 /**
- * Class for finding a specific word.
+ * Program that uses different methods for finding a pattern in a text.
  * 
  * @author Anton Gustafsson
  *
  */
-public class TestFindWord {
+public class StringSearch {
 	private int outerIterations;
 	private int innerIterations;
 	private long totalNS;
 
 	public static void main(String[] args) {
-		new TestFindWord();
+		new StringSearch();
 	}
 
-	public TestFindWord() {
+	public StringSearch() {
 		String text = "In this approach, we avoid backtracking by constructing a deterministic finite automaton (DFA) that recognizes stored search string. These are expensive to construct—they are usually created using the powerset construction—but are very quick to use. For example, the DFA shown to the right recognizes the word . This approach is frequently generalized in practice to search for arbitrary regular expressions.";
-		String pattern = "ffff";
+		String pattern = "this";
 
 		for (int i = 0; i < 5; i++) {
 			long startTime = System.nanoTime();
-			// Uncomment which method to use here
 
-			System.out.println("Did your pattern exist?: " + naiveSearch(text, pattern));
-//			System.out.println("Did your pattern exist?: " + rabinKarp(text, pattern));
-			// System.out.println("Did your pattern exist?: " +
-			// knuthMorrisPratt(text, pattern));
+			// Uncomment which method to use here
+			boolean exist = naiveSearch(text, pattern);
+			// boolean exist = rabinKarp(text, pattern);
+			// boolean exist = knuthMorrisPratt(text, pattern);
+			System.out.println("Did your pattern exist?: " + exist);
+
 			long endTime = System.nanoTime();
 			long duration = (endTime - startTime);
-
 			totalNS += duration;
-			System.out.println("Total Iterations in: " + innerIterations);
-			System.out.println("Total Iterations out: " + outerIterations);
-			System.out.println("Total Iterations: ");
-			System.out.println(innerIterations + outerIterations);
-			innerIterations = 0;
-			outerIterations = 0;
+			prtIterations();
 		}
 		totalNS = totalNS / 5;
 		System.out.println("Average ns is : " + totalNS);
 	}
 
 	/**
-	 * Algorithm that finds a certain pattern in a string. Naive Search
+	 * Algorithm that finds a certain pattern in a string. Naive Search. Basicly
+	 * compares each and every letter if they match. If the pattern is found,
+	 * return true.
 	 * 
 	 * @param text - String the text to search in.
 	 * @param pattern - String the pattern to look for.
@@ -55,7 +52,6 @@ public class TestFindWord {
 		StringBuilder result = new StringBuilder();
 		char[] txt = text.toCharArray();
 		char[] patt = pattern.toCharArray();
-
 		// Loop through the text array.
 		for (int i = 0; i < txt.length; i++) {
 			innerIterations++;
@@ -99,7 +95,6 @@ public class TestFindWord {
 		int i, j;
 		int h = 1;
 
-		 // The value of h would be "pow(d, M-1)%q"
 	    for (i = 0; i < pattLen-1; i++)
 	        h = (h*sigmaLen)%prime;
 	 
@@ -148,8 +143,9 @@ public class TestFindWord {
 	}
 
 	/**
-	 * Algorithm that finds a certain pattern in a string. KMP search. Think of
-	 * it as naive search with intelligent index.
+	 * Algorithm that finds a certain pattern in a string. KMP search. KMP tries
+	 * to compare as little as possible. If we already have comapared a substing
+	 * and it doesn't containg anything, we can skip that section.
 	 * 
 	 * @param text - String the text to search in.
 	 * @param pattern - String the pattern to look for.
@@ -197,4 +193,15 @@ public class TestFindWord {
 		return arr;
 	}
 
+	/**
+	 * Just prints the number of iterations.
+	 */
+	private void prtIterations() {
+		System.out.println("Total Iterations in: " + innerIterations);
+		System.out.println("Total Iterations out: " + outerIterations);
+		System.out.println("Total Iterations: ");
+		System.out.println(innerIterations + outerIterations);
+		innerIterations = 0;
+		outerIterations = 0;
+	}
 }

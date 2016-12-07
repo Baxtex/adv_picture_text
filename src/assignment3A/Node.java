@@ -3,7 +3,7 @@ package assignment3A;
 import java.util.LinkedList;
 
 /**
- * Represents one node in the tree.
+ * Represents one node in the tree. Has getters and setters for it's value.
  * 
  * @author Anton Gustafsson
  *

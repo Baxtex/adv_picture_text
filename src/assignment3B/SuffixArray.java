@@ -1,5 +1,11 @@
 package assignment3B;
 
+/**
+ * Program that builds an array with suffixes from a given string.
+ * 
+ * @author Anton Gustafsson
+ *
+ */
 public class SuffixArray {
 	private String[] suffix;
 	private String[] text;
@@ -24,6 +30,7 @@ public class SuffixArray {
 			index[i] = i;
 			this.text[i] = text.substring(i, i + 1);
 		}
+
 		build();
 	}
 
@@ -76,15 +83,6 @@ public class SuffixArray {
 		printArray();
 	}
 
-	/**
-	 * Prints the complete array.
-	 */
-	public void printArray() {
-		System.out.println("Position, Suffix, Old index");
-		for (int i = 0; i < length; i++) {
-			System.out.println( i +" --------- " + suffix[i] + " --------- " + index[i]);
-		}
-	}
 
 	/**
 	 * Prints the longest common prefix (lcp) for the given string using kasai's algoritm.
@@ -110,22 +108,38 @@ public class SuffixArray {
 				continue;// "Breaks" the current iteration, but not the loop.
 			}
 
-			int y = index[invIndex[i] + 1];//Index of the next suffix.
+			// Index of the next suffix.
+			int y = index[invIndex[i] + 1];
 			
 			//Start matching suffix[A] with suffix[B]. If they match, increase k.
 			while (i + k < length && y + k < length && chars[i + k] == chars[y + k]) {
 				k++;
 			}
-			
 			lcp[invIndex[i]] = k; //lcp for the current suffix.
-			
 			//Deletes the starting character.
 			 if (k>0){
 				 k--;				 
 			 }
 		}
+		prtLCP(lcp);
+	}
 
-		//Print the lcp
+	/**
+	 * Prints the suffix array with it's old index.
+	 */
+	public void printArray() {
+		System.out.println("Position, Suffix, Old index");
+		for (int i = 0; i < length; i++) {
+			System.out.println(i + " --------- " + suffix[i] + " --------- " + index[i]);
+		}
+	}
+
+	/**
+	 * Prints the lcp array.
+	 * 
+	 * @param lcp
+	 */
+	private void prtLCP(int[] lcp) {
 		System.out.println("");
 		System.out.println("LCP array:");
 		System.out.println("Pos,  pref1,   pref2,    lcp:");
@@ -135,5 +149,4 @@ public class SuffixArray {
 				break;
 		}
 	}
-
 }

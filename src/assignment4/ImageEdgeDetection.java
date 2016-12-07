@@ -9,21 +9,24 @@ import java.net.URL;
 
 import javax.imageio.ImageIO;
 
-import assignment2.MorphImage;
+/**
+ * Program detects edges in a given image, and outputs a new image with only the
+ * edges.
+ * 
+ * @author Anton Gustafsson
+ *
+ */
+public class ImageEdgeDetection {
 
-public class EdgeDetection {
-
-	private final int THRESHOLD = 65;// Decides at which threshold for black and
-										// white. Needs modifying for different
-										// images.
+	private final int THRESHOLD = 65;// Changes depending on image
 	private final int MAX = 255;// Represent white;
 	private final int MIN = 0;// Represent black;
-	private int counter = 0;
+
 	public static void main(String[] args) {
-		new EdgeDetection();
+		new ImageEdgeDetection();
 	}
 
-	public EdgeDetection() {
+	public ImageEdgeDetection() {
 		String url0 = "rubik.jpg";
 		detect(url0);
 	}
@@ -42,14 +45,11 @@ public class EdgeDetection {
 		WritableRaster outraster = resImage.getRaster();
 
 		System.out.println("Size: " + width + "X" + height + "Pixels ");
-		// Loop through every pixel, ignores the edges as these will throw out
-		// of
-		// bounds.
 		for (int i = 1; i < width - 2; i++) {
 			for (int j = 1; j < height - 2; j++) {
 
 				// Compute filter result, loops over in a
-				// box pattern.
+				// box pattern.(9x9). Ignores edges.
 				int sum = 0;
 				for (int x = -1; x <= 1; x++) {
 					for (int y = -1; y <= 1; y++) {
@@ -57,19 +57,14 @@ public class EdgeDetection {
 						int jx = j + x;
 						int p = inraster.getSample(jy, jx, 0);
 						sum = sum + p;
-						counter++;
 					}
 				}
+
 				int q = (int) Math.round(sum / 9.0);
-				if (q > THRESHOLD) {
-					q = MIN;
-				} else {
-					q = MAX;
-				}
+				checkMaxMin(q);
 				outraster.setSample(i, j, 0, q);
 			}
 		}
-System.out.println("Iterations " + counter);
 		writeImage(resImage, "jpg", "EdgeDetection " + url);
 	}
 
@@ -82,7 +77,7 @@ System.out.println("Iterations " + counter);
 	private BufferedImage readImage(String URL) {
 		BufferedImage img = null;
 
-		URL defaultImage = EdgeDetection.class.getResource(URL);
+		URL defaultImage = ImageEdgeDetection.class.getResource(URL);
 		try {
 			File file = new File(defaultImage.toURI());
 			img = ImageIO.read(file);
@@ -90,6 +85,21 @@ System.out.println("Iterations " + counter);
 			e.printStackTrace();
 		}
 		return img;
+	}
+
+	/**
+	 * Check if we are above or below max and min limit of the pixel value.
+	 * 
+	 * @param p - pixel value
+	 * @return - pixel value
+	 */
+	private int checkMaxMin(int p) {
+		if (p > THRESHOLD) {
+			p = MIN;
+		} else {
+			p = MAX;
+		}
+		return p;
 	}
 
 	/**

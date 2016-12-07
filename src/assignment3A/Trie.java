@@ -4,7 +4,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
- * Trie datastructure that is a dictianry datastructure for strings.
+ * Trie datastructure that is a dictionary datastructure for strings. Each node
+ * contains one char and also has a flag if they are a complete word or not.
  * 
  * @author Anton Gustafsson
  */
@@ -85,8 +86,6 @@ public class Trie {
 			if (childContain(children, String.valueOf(c))) {
 				// get the child *of the node, not root* and it's children.
 				curr = getChild(curr, c);
-
-		
 				if (curr == null) {
 					// we have reached a node that does not have children
 					if (i == chars.length - 1) {
@@ -115,9 +114,9 @@ public class Trie {
 	 * @param c - the character to add.
 	 */
 	private void insertNode(Node node, Character c) {
-		if (childContain(node.getChildren(), String.valueOf(c))) {
-			return;
-		}
+		// if (childContain(node.getChildren(), String.valueOf(c))) {
+		// return;
+		// }
 		Node next = new Node(c.toString());
 		node.getChildren().add(next);
 	}
@@ -158,6 +157,7 @@ public class Trie {
 		} else {
 
 			System.out.println("List is empty, can't iterate");
+			return false;
 		}
 
 		Iterator<Node> iter = children.iterator();
