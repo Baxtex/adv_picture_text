@@ -1,6 +1,7 @@
 package assignment3A;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +28,6 @@ public class TrieTest {
 
 	    @Test
 	    public void testInsert() {
-
 	        assertTrue(trie.find("cat"));
 	        assertTrue(trie.find("car"));
 	        assertTrue(trie.find("craft"));
