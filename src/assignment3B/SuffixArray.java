@@ -86,7 +86,7 @@ public class SuffixArray {
 
 	/**
 	 * Prints the longest common prefix (lcp) for the given string using kasai's algoritm.
-	 * http://www.geeksforgeeks.org/­­kasais-algorithm-for-construction-of-lcp-array-from-suffix-array/
+	 * 
 	 */
 	public void printLongestPrefix(String s) {
 		int k = 0;
