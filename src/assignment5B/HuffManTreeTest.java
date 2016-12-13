@@ -19,6 +19,7 @@ public class HuffManTreeTest {
 
 	    @Test
 	    public void testSearch() {
-//	    	ht.printLongestPrefix("banana");
+//	    	
+
 	    }
 }

@@ -59,6 +59,7 @@ public class Trie {
 			curr = getChild(curr, chars[i]);
 			// If we find the word we are adding already in the trie, mark it so that it has the word.
 			if (curr.getText().equals(word) && !curr.isWord()) {
+				System.out.println("We have found the word.");
 				curr.setWord(true);
 				size++;
 				return true;
