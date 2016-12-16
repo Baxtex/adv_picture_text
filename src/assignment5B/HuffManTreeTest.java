@@ -14,11 +14,12 @@ public class HuffManTreeTest {
 
 	    @Before
 	    public void setUp() {
-	    	ht = new HuffmanTree();
+		ht = new HuffmanTree(null);
 	    }
 
 	    @Test
 	    public void testSearch() {
-//	    	ht.printLongestPrefix("banana");
+//	    	
+
 	    }
 }

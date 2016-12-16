@@ -30,7 +30,9 @@ public class SuffixArray {
 			index[i] = i;
 			this.text[i] = text.substring(i, i + 1);
 		}
-
+		System.out.println(" ");
+		printArray();
+		System.out.println(" ");
 		build();
 	}
 
@@ -44,6 +46,7 @@ public class SuffixArray {
 			//Creates suffixes .
 			for (int txtI = i; txtI < length; txtI++) {
 				txt += text[txtI];
+				System.out.println(txt);
 			}
 			System.out.println("Adding suffix to array: " + txt);
 			suffix[i] = txt;
@@ -92,17 +95,19 @@ public class SuffixArray {
 		int k = 0;
 		char[] chars = s.toCharArray();
 		int[] lcp = new int[length]; //The resulting lcp array.
-		int[] invIndex = new int[length]; //the current index put in reverse.
+		int[] invIndex = new int[length]; //the suffix start pos in reverse
 
-		// Put the suffix array in inverse.
+		// Put the suffix array in inverse. so we can find the next suffix.
 		for (int i = 0; i < length; i++) {
 			invIndex[index[i]] = i;
 		}
 
 		// Process each suffix.
 		for (int i = 0; i < length; i++) {
+			System.out.println("\n Now on index: " + i + " and invIndex is : "  + invIndex[i]);
 			
-			//When we reach suffix at length-1 we can't match anything so we just set k to zero, throws np otherwise.
+			//When we reach suffix at length-1 we are at the last suffix, and therefore we can't compare it to nothing, so 
+			//we set k = 0.
 			if (invIndex[i] == length - 1) {
 				k = 0;
 				continue;// "Breaks" the current iteration, but not the loop.
@@ -111,7 +116,10 @@ public class SuffixArray {
 			// Index of the next suffix.
 			int y = index[invIndex[i] + 1];
 			
-			//Start matching suffix[A] with suffix[B]. If they match, increase k.
+			//Start matching first suffix with second suffix. If their prefixes have the same length, set k to that
+			//prefix's length.
+			//While(prefixA < length && prefixB<length && suffixA == suffixB)
+
 			while (i + k < length && y + k < length && chars[i + k] == chars[y + k]) {
 				k++;
 			}
@@ -123,12 +131,14 @@ public class SuffixArray {
 		}
 		prtLCP(lcp);
 	}
+	
+
 
 	/**
 	 * Prints the suffix array with it's old index.
 	 */
 	public void printArray() {
-		System.out.println("Position, Suffix, Old index");
+		System.out.println("Position, Suffix, suffix start pos");
 		for (int i = 0; i < length; i++) {
 			System.out.println(i + " --------- " + suffix[i] + " --------- " + index[i]);
 		}

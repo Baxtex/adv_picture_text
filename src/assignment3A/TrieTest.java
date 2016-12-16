@@ -29,6 +29,7 @@ public class TrieTest {
 	    @Test
 	    public void testInsert() {
 	        assertTrue(trie.find("cat"));
+	        assertTrue(trie.find("ca"));
 	        assertTrue(trie.find("car"));
 	        assertTrue(trie.find("craft"));
 	        assertTrue(trie.find("yes"));
