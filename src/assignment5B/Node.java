@@ -3,22 +3,16 @@ package assignment5B;
 /**
  * One node in the Huffman tree.
  * 
- * @author i7
+ * @author Anton Gustafsson
  *
  */
 public class Node implements Comparable<Node> {
 
 	private char data;
-	public char getData() {
-		return data;
-	}
-
 	private int freq;
 	private Node left;
 	private Node right;
 	private String code;
-
-
 
 	public Node(char data, int freq) {
 		this.data = data;
@@ -31,7 +25,11 @@ public class Node implements Comparable<Node> {
 		this.left = left;
 		this.right = right;
 	}
-	
+
+	public char getData() {
+		return data;
+	}
+
 	public Node getLeft() {
 		return left;
 	}
@@ -39,7 +37,7 @@ public class Node implements Comparable<Node> {
 	public Node getRight() {
 		return right;
 	}
-	
+
 	public String getCode() {
 		return code;
 	}
@@ -48,24 +46,33 @@ public class Node implements Comparable<Node> {
 		this.code = code;
 	}
 
+	public int getFreq() {
+		return freq;
+	}
 
+	/**
+	 * If left or right child is null, this is a leaf.
+	 * @return
+	 */
+	public boolean isLeafNode() {
+		return left == null && right == null;
+	}
+
+	/**
+	 * Needs to be able to compare nodes in the order of their frequencies for
+	 * the heap.
+	 */
 	@Override
 	public int compareTo(Node o) {
 		if (o instanceof Node) {
 			return freq - ((Node) o).freq;
 		}
 		return -1;
-
 	}
 
-	public int getFreq() {
-		return freq;
-	}
-
-	public boolean isLeafNode() {
-		return left == null && right == null;
-	}
-
+	/**
+	 * Returns this node's data.
+	 */
 	@Override
 	public String toString() {
 		return "Node " + data + ", " + freq + ", " + code;

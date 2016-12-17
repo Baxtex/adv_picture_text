@@ -14,7 +14,7 @@ public class HuffManTreeTest {
 
 	@Test
 	public void testSearch1() {
-		HuffmanTree ht = new HuffmanTree("Mississippi River");
+		HuffmanTree ht = new HuffmanTree("Mississippi_River");
 		ht.printEncoding();
 
 	}

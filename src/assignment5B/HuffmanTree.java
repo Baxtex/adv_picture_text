@@ -1,40 +1,36 @@
 package assignment5B;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.stream.Collectors;
 
 public class HuffmanTree {
 
 	private PriorityQueue<Node> pq;
 	private Node[] nodeArray;
+	private String s;
 	private char charArr[];
 	private int charFreqs[];
-	private String s;
 
 	public HuffmanTree(String s) {
 		this.s = s;
-		findOccurences(s);
+		buildArrays();
 		pq = new PriorityQueue<Node>(charFreqs.length);
 		nodeArray = new Node[charArr.length];
 
-		// Create Nodes from the chars and frequncies and put them in a array.
+		// Create Nodes from the chars and occurrences and put them in a array.
 		for (int i = 0; i < charArr.length; i++) {
 			nodeArray[i] = new Node(charArr[i], charFreqs[i]);
 		}
-		build(nodeArray);
+		buildTree();
 	}
 
-	private void build(Node[] nodeArray) {
+	private void buildTree() {
 		Node left, right, top;
-		// Put the Nodes from the node array in a min heap/priorityQueue.
+		// Put the Nodes from the node array in a min-heap/priorityQueue.
 		for (int i = 0; i < nodeArray.length; i++) {
 			pq.add(nodeArray[i]);
 		}
@@ -43,69 +39,68 @@ public class HuffmanTree {
 		while (pq.size() > 1) {
 			left = pq.remove();
 			right = pq.remove();
-			// dena nya noden tar en char och en freq.
 			int newFreq = left.getFreq() + right.getFreq();
 			top = new Node('$', newFreq, left, right);
 			pq.add(top);
 		}
+		// Now the min heap only contains one node with the character $
+		// and it has all the other nodes as children.
+		// It's frequency should be the same as the total
+		// number of characters in the string.
+		// This is our complete tree.
 		encode(pq.remove(), "0");
 	}
 
 	/**
-	 * Set's the encoding for every node.
+	 * Set's the encoding for every node by depth first traversal through the
+	 * tree.
 	 * 
-	 * @param node
-	 * @param code
+	 * @param n - the current node.
+	 * @param c - the code for the current node.
 	 */
-	private void encode(Node node, String code) {
-		if (!node.isLeafNode()) {
-			code += 0;
-			encode(node.getLeft(), code);
-			code += 1;
-			encode(node.getRight(), code);
+	private void encode(Node n, String c) {
+		if (!n.isLeafNode()) {
+			// While going left append 0
+			// System.out.println("LEFT");
+			c += 0;
+			encode(n.getLeft(), c);
+			// while going right, append 1
+			// System.out.println("RIGHT");
+			c += 1;
+			encode(n.getRight(), c);
 		} else {
-			if (code.length() > 0) {
-				code = code.substring(0, code.length() - 1); //Removes one zero
+			// System.out.println("LEAF-" + code);
+			if (c.length() > 0) {
+				c = c.substring(0, c.length() - 1); // Removes one zero
 			}
-			node.setCode(String.valueOf(code));
+			// Set the code of the node.
+			n.setCode(String.valueOf(c));
 		}
-
 	}
 
 	/**
 	 * Finds occurencess of each letter in the given string and initializes the
-	 * arrays containing the letters and their frequencies. Currently the
-	 * letters in the array become in random order.
+	 * arrays containing the letters and their frequencies.
 	 * 
 	 * @param s
 	 */
-	private void findOccurences(String s) {
-		List<Character> original = new ArrayList(s.length());
-		List<Character> duplicateRemoved;
+	private void buildArrays() {
+		List<String> original = s.chars().mapToObj(i -> (char) i).map(String::valueOf).collect(Collectors.toList());
+		List<String> duplicateRemoved = s.chars().mapToObj(i -> (char) i).map(String::valueOf).distinct()
+				.collect(Collectors.toList());
 
-		for (int i = 0; i < s.length(); i++) {
-			original.add(s.charAt(i));
+		ArrayList<Integer> Occurrences = new ArrayList<>();
+		int counter = 1;
+		for (String aList : duplicateRemoved) {
+			counter = (int) original.stream().filter(s1 -> s1.equals(aList)).count();
+			Occurrences.add(counter);
 		}
-		duplicateRemoved = new ArrayList<Character>(original);
-
-		// Remove duplicates from second list.
-		HashSet<Character> hs = new HashSet<Character>();
-		hs.addAll(duplicateRemoved);
-		duplicateRemoved.clear();
-		duplicateRemoved.addAll(hs);
-
+		// Assign the values to the arrays:
 		charFreqs = new int[duplicateRemoved.size()];
 		charArr = new char[duplicateRemoved.size()];
-
 		for (int i = 0; i < charArr.length; i++) {
-			char c = duplicateRemoved.get(i);
-			int count = Collections.frequency(original, c);
-			charArr[i] = c;
-			charFreqs[i] = count;
-		}
-
-		for (int i = 0; i < charArr.length; i++) {
-			System.out.println(charArr[i] + " " + charFreqs[i]);
+			charArr[i] = duplicateRemoved.get(i).charAt(0);
+			charFreqs[i] = Occurrences.get(i);
 		}
 	}
 
@@ -122,11 +117,8 @@ public class HuffmanTree {
 		System.out.println("'" + s + "'" + " is encoded as:");
 		char[] arr = s.toCharArray();
 		for (char c : arr) {
-
-			System.out.print(c + "=" + ht.get(c) + " ");
+			System.out.println(c + "=" + ht.get(c) + " ");
 		}
-		
-		System.out.println(" \n \n \n \n \n \n \n");
-
+		System.out.println("\n \n \n");
 	}
 }
