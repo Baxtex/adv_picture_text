@@ -86,8 +86,7 @@ public class HuffmanTree {
 	 */
 	private void buildArrays() {
 		List<String> original = s.chars().mapToObj(i -> (char) i).map(String::valueOf).collect(Collectors.toList());
-		List<String> duplicateRemoved = s.chars().mapToObj(i -> (char) i).map(String::valueOf).distinct()
-				.collect(Collectors.toList());
+		List<String> duplicateRemoved = s.chars().mapToObj(i -> (char) i).map(String::valueOf).distinct().collect(Collectors.toList());
 
 		ArrayList<Integer> Occurrences = new ArrayList<>();
 		int counter = 1;
