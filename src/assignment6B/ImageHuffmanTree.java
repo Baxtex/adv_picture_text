@@ -9,12 +9,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.List;
-import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
@@ -25,31 +22,26 @@ import javax.imageio.ImageIO;
  * @author Anton Gustafsson
  *
  */
-public class ImageHuffman {
+public class ImageHuffmanTree {
 
+	private String url;
 	private PriorityQueue<Node> pq;
 	private Node[] nodeArray;
+	private List<Integer> pixels;
 	private int pixelArr[];
 	private int pixelFreq[];
-	private List<Integer> pixels;
-	private final String url = "blackRed.jpg";
+	private int imageSize;
 
 	/**
-	 * Starts this program.
-	 * http://www.print-driver.com/stories/huffman-coding-jpeg
-	 * 
-	 * @param args
+	 * Constructor that initializes variables and arrays.
 	 */
-	public static void main(String[] args) {
-		new ImageHuffman();
-	}
-
-	public ImageHuffman() {
+	public ImageHuffmanTree(String url) {
+		this.url = url;
 		saveColors();
-
 		nodeArray = new Node[pixelArr.length];
 		pq = new PriorityQueue<Node>(pixelFreq.length);
-		// Create Nodes from the color values and occurrences and put them in a array.
+		// Create Nodes from the color values and occurrences and put them in a
+		// array.
 		for (int i = 0; i < pixelArr.length; i++) {
 			nodeArray[i] = new Node(pixelArr[i], pixelFreq[i]);
 		}
@@ -68,8 +60,9 @@ public class ImageHuffman {
 		BufferedImage img = readImage(url);
 		int width = img.getWidth();
 		int height = img.getHeight();
-		int size = width * height;
-		pixels = new ArrayList<Integer>(size);
+		imageSize = (width * height) * 24;
+		int listSize = (width * height) * 3;
+		pixels = new ArrayList<Integer>(listSize);
 
 		WritableRaster inraster = img.getRaster();
 		for (int i = 0; i < width; i++)
@@ -78,9 +71,12 @@ public class ImageHuffman {
 				pixels.add(inraster.getSample(i, j, 1));
 				pixels.add(inraster.getSample(i, j, 2));
 			}
-		countColors2();
+		countColors();
 	}
 
+	/**
+	 * Counts occurences and removes duplicates
+	 */
 	private void countColors() {
 		List<Integer> duplicateRemoved;
 		duplicateRemoved = new ArrayList<Integer>(pixels);
@@ -99,35 +95,6 @@ public class ImageHuffman {
 			pixelArr[i] = p;
 			pixelFreq[i] = count;
 		}
-
-	}
-	
-	private void countColors2() {
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < pixels.size(); i++) {
-			sb.append(pixels.get(i));
-		}
-		
-		String s= sb.toString();
-		
-		List<String> original = s.chars().mapToObj(i -> (char) i).map(String::valueOf).collect(Collectors.toList());
-		List<String> duplicateRemoved = s.chars().mapToObj(i -> (char) i).map(String::valueOf).distinct().collect(Collectors.toList());
-
-		ArrayList<Integer> Occurrences = new ArrayList<>();
-		int counter = 1;
-		for (String aList : duplicateRemoved) {
-			counter = (int) original.stream().filter(s1 -> s1.equals(aList)).count();
-			Occurrences.add(counter);
-		}
-		// Assign the values to the arrays:
-		pixelFreq = new int[duplicateRemoved.size()];
-		pixelArr = new int[duplicateRemoved.size()];
-		
-		for (int i = 0; i < pixelArr.length; i++) {
-			pixelArr[i] = duplicateRemoved.get(i).charAt(0);
-			pixelFreq[i] = Occurrences.get(i);
-		}
-
 	}
 
 	private void buildTree() {
@@ -150,7 +117,7 @@ public class ImageHuffman {
 		// It's frequency should be the same as the total
 		// number of characters in the string.
 		// This is our complete tree.
-		encode(pq.remove(), "0");
+		encode(pq.remove(), "");
 	}
 
 	/**
@@ -172,24 +139,32 @@ public class ImageHuffman {
 			encode(n.getRight(), c);
 		} else {
 			// System.out.println("LEAF-" + code);
+			// Set the code of the node.
 			if (c.length() > 0) {
 				c = c.substring(0, c.length() - 1); // Removes one zero
 			}
-			// Set the code of the node.
 			n.setCode(String.valueOf(c));
 		}
 	}
 
 	/**
-	 * Loops through the nodes and arrays to print their values.
+	 * Loops through the nodes and arrays to print their values. Also does some
+	 * calculations to show the number of bits and the percentage.
 	 */
 	public void printEncoding() {
-//		Map<Integer, String> ht = new Hashtable<Integer, String>();
-		System.out.println("color   Freq    Code");
+		System.out.println("color   Freq    Code   bits(freq*nbr of bits)");
+		int bits = 0;
 		for (Node n : nodeArray) {
-			System.out.println("'" + n.getData() + "' -- " + n.getFreq() + " -- '" + n.getCode() + "'");
-//			ht.put(n.getData(), n.getCode());
+			bits += n.getFreq() * n.getCode().length();
+			System.out.println("'" + n.getData() + "' -- " + n.getFreq() + " -- '" + n.getCode() + "'" + "--"
+					+ n.getFreq() * n.getCode().length());
 		}
+		int difference = (imageSize - bits);
+		float p1 = bits * 1f / imageSize;
+		float p2 = (1 - (bits * 1f / imageSize)) * 100;
+		System.out.println("Original compressed difference percent");
+		System.out.println(imageSize + "--" + bits + "---" + difference + "--" + p2 + "%");
+		System.out.println("\n\n");
 	}
 
 	/**
@@ -201,7 +176,7 @@ public class ImageHuffman {
 	private BufferedImage readImage(String URL) {
 		BufferedImage img = null;
 
-		URL defaultImage = ImageHuffman.class.getResource(URL);
+		URL defaultImage = ImageHuffmanTree.class.getResource(URL);
 		try {
 			File file = new File(defaultImage.toURI());
 			img = ImageIO.read(file);
@@ -210,5 +185,4 @@ public class ImageHuffman {
 		}
 		return img;
 	}
-
 }

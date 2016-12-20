@@ -16,18 +16,14 @@ import javax.imageio.ImageIO;
  * @author Anton Gustafsson
  *
  */
-public class ImageEdgeDetection {
+public class EdgeDetection {
 
-	private final int THRESHOLD = 65;// Changes depending on image
+	private int threshold;// Changes depending on image
 	private final int MAX = 255;// Represent white;
 	private final int MIN = 0;// Represent black;
 
-	public static void main(String[] args) {
-		new ImageEdgeDetection();
-	}
-
-	public ImageEdgeDetection() {
-		String url0 = "rubik.jpg";
+	public EdgeDetection(String url0, int threshold) {
+		this.threshold = threshold;
 		detect(url0);
 	}
 
@@ -76,7 +72,7 @@ public class ImageEdgeDetection {
 	private BufferedImage readImage(String URL) {
 		BufferedImage img = null;
 
-		URL defaultImage = ImageEdgeDetection.class.getResource(URL);
+		URL defaultImage = EdgeDetection.class.getResource(URL);
 		try {
 			File file = new File(defaultImage.toURI());
 			img = ImageIO.read(file);
@@ -93,7 +89,7 @@ public class ImageEdgeDetection {
 	 * @return - pixel value
 	 */
 	private int checkMaxMin(int p) {
-		if (p > THRESHOLD) {
+		if (p > threshold) {
 			p = MIN;
 		} else {
 			p = MAX;
@@ -116,5 +112,4 @@ public class ImageEdgeDetection {
 		}
 		System.out.println("Morphed image: " + title);
 	}
-
 }

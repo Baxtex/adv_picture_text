@@ -1,6 +1,5 @@
 package assignment5B;
 
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -11,26 +10,30 @@ import org.junit.Test;
  */
 public class HuffManTreeTest {
 
-
 	@Test
 	public void testSearch1() {
 		HuffmanTree ht = new HuffmanTree("Mississippi_River");
 		ht.printEncoding();
 
 	}
-	
-	
+
 	@Test
 	public void testSearch2() {
 		HuffmanTree ht = new HuffmanTree("banana");
 		ht.printEncoding();
 
 	}
-	
-	
+
 	@Test
 	public void testSearch3() {
 		HuffmanTree ht = new HuffmanTree("abcccccccdfghh");
+		ht.printEncoding();
+
+	}
+
+	@Test
+	public void testSearch4() {
+		HuffmanTree ht = new HuffmanTree("ACTGGTCAGTCAGGTCGATAGC");
 		ht.printEncoding();
 
 	}

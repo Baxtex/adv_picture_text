@@ -23,44 +23,46 @@ public class Trie {
 	}
 
 	/**
-	 * Adds a new word to the trie.
-	 * Basicly we check if any of the childen to a node contains the letters
-	 * we are looking for. If not, create a node with that letter. When we are done
-	 * mark the last node(leaf) as the location of the word.
+	 * Adds a new word to the trie. Basicly we check if any of the childen to a
+	 * node contains the letters we are looking for. If not, create a node with
+	 * that letter. When we are done mark the last node(leaf) as the location of
+	 * the word.
 	 * 
-	 * @param word - String the word to add.
+	 * @param s - String the word to add.
 	 * @return true if we are done adding.
 	 */
-	public boolean add(String word) {
-		System.out.println("adding " + "'" + word + "'");
-		Node curr = root;
+	public boolean add(String s) {
+		System.out.println("adding " + "'" + s + "'");
+		Node n = root;
 		int i = 0;
-		char[] chars = word.toCharArray();
+		char[] chars = s.toCharArray();
 
 		// Loop through all letters in the word.
 		while (i < chars.length) {
-			LinkedList<Node> children = curr.getChildren();
+			LinkedList<Node> children = n.getChildren();
 			System.out.println("Current char is " + chars[i]);
 
 			// If the node does not exists, add it.
 			if (!childContain(children, String.valueOf(chars[i]))) {
 				System.out.println("Can't find this char, adding node...");
-				insertNode(curr, chars[i]);
+				insertNode(n, chars[i]);
 
-				// if we have traversed all letters and reached the leaf, mark it as a leaf.
+				// if we have traversed all letters and reached the leaf, mark
+				// it as a leaf.
 				if (i == chars.length - 1) {
 					System.out.println("LEAF; SET IT TO TRUE--------------");
-					getChild(curr, chars[i]).setWord(true);
+					getChild(n, chars[i]).setWord(true);
 					size++;
 					return true;
 				}
 			}
 			// Get the new child.
-			curr = getChild(curr, chars[i]);
-			// If we find the word we are adding already in the trie, mark it so that it has the word.
-			if (curr.getText().equals(word) && !curr.isWord()) {
+			n = getChild(n, chars[i]);
+			// If we find the word we are adding already in the trie, mark it so
+			// that it has the word.
+			if (n.getText().equals(s) && !n.isWord()) {
 				System.out.println("We have found the word.");
-				curr.setWord(true);
+				n.setWord(true);
 				size++;
 				return true;
 			}
@@ -153,22 +155,15 @@ public class Trie {
 	private boolean childContain(LinkedList<Node> children, String c) {
 
 		if (children.size() > 0) {
-
 			System.out.println("List is not empty");
 		} else {
-
 			System.out.println("List is empty, can't iterate");
 			return false;
 		}
 
-		Iterator<Node> iter = children.iterator();
-
-		while (iter.hasNext()) {
-			Node n = iter.next();
-
+		for (Node n : children) {
 			System.out.print("char " + (c) + " lista " + n.getText() + "?  ");
 			System.out.println(n.getText().equals(c));
-
 			if (n.getText().equals(c)) {
 				return true;
 			}

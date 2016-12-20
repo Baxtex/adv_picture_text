@@ -1,7 +1,5 @@
 package assignment1;
 
-import java.util.Arrays;
-
 /**
  * Program that uses different methods for finding a pattern in a text.
  * 
@@ -9,34 +7,38 @@ import java.util.Arrays;
  *
  */
 public class StringSearch {
-	private int outerIterations;
-	private int innerIterations;
+	private int outerIterations, innerIterations;
 	private long totalNS;
 
-	public static void main(String[] args) {
-		new StringSearch();
-	}
+	public StringSearch(String text, String pattern, String method) {
 
-	public StringSearch() {
-		String text = "In this approach, we avoid backtracking by constructing a deterministic finite automaton (DFA) that recognizes stored search string. These are expensive to construct—they are usually created using the powerset construction—but are very quick to use. For example, the DFA shown to the right recognizes the word . This approach is frequently generalized in practice to search for arbitrary regular expressions.";
-		String pattern = "this";
+		boolean exist = false;
 
-		for (int i = 0; i < 5; i++) {
-			long startTime = System.nanoTime();
+		long startTime = System.nanoTime();
 
-			// Uncomment which method to use here
-			boolean exist = naiveSearch(text, pattern);
-			// boolean exist = rabinKarp(text, pattern);
-			// boolean exist = knuthMorrisPratt(text, pattern);
-			System.out.println("Did your pattern exist?: " + exist);
+		if (method.equals("naive")) {
+			System.out.println("Naive");
+			exist = naiveSearch(text, pattern);
 
-			long endTime = System.nanoTime();
-			long duration = (endTime - startTime);
-			totalNS += duration;
-			prtIterations();
+		} else if (method.equals("rabin")) {
+			System.out.println("Rabin Karp");
+			exist = rabinKarp(text, pattern);
+
+		} else if (method.equals("kmp")) {
+			System.out.println("Knut Morris Pratt");
+			exist = knuthMorrisPratt(text, pattern);
+
+		} else {
+			System.out.println("ERROR");
 		}
-		totalNS = totalNS / 5;
-		System.out.println("Average ns is : " + totalNS);
+		System.out.println("Did your pattern exist?: " + exist);
+
+		long endTime = System.nanoTime();
+		long duration = (endTime - startTime);
+		totalNS += duration;
+		prtIterations();
+
+		System.out.println("Execution time in ns is : " + totalNS + "\n");
 	}
 
 	/**
@@ -67,7 +69,7 @@ public class StringSearch {
 				} else {
 					result.append(txt[i + j]);
 					// if result is equal pattern, return true.
-					System.out.println(result.toString());
+
 					if (result.toString().equals(pattern)) {
 						return true;
 					}
@@ -95,50 +97,45 @@ public class StringSearch {
 		int i, j;
 		int h = 1;
 
-	    for (i = 0; i < pattLen-1; i++)
-	        h = (h*sigmaLen)%prime;
-	 
-	    // Calculate the hash value of pattern and first
-	    // window of text
-	    for (i = 0; i < pattLen; i++)
-	    {
-	        pattHash = (sigmaLen*pattHash + patt[i])%prime;
-	        txtHash = (sigmaLen*txtHash + txt[i])%prime;
-	    }
-	 
-	    // Slide the pattern over text one by one
-	    for (i = 0; i <= txtLen - pattLen; i++)
-		{
+		for (i = 0; i < pattLen - 1; i++)
+			h = (h * sigmaLen) % prime;
+
+		// Calculate the hash value of pattern and first
+		// window of text
+		for (i = 0; i < pattLen; i++) {
+			pattHash = (sigmaLen * pattHash + patt[i]) % prime;
+			txtHash = (sigmaLen * txtHash + txt[i]) % prime;
+		}
+
+		// Slide the pattern over text one by one
+		for (i = 0; i <= txtLen - pattLen; i++) {
 			innerIterations++;
-	        // Check the hash values of current window of text
-	        // and pattern. If the hash values match then only
-	        // check for characters on by one
-	        if ( pattHash == txtHash )
-	        {
-	            /* Check for characters one by one */
-	            for (j = 0; j < pattLen; j++)
-	            {
+			// Check the hash values of current window of text
+			// and pattern. If the hash values match then only
+			// check for characters on by one
+			if (pattHash == txtHash) {
+				/* Check for characters one by one */
+				for (j = 0; j < pattLen; j++) {
 					outerIterations++;
-	                if (txt[i+j] != patt[j])
-	                    break;
-	            }
-	            // pattern is found.
-	            if (j == pattLen){	
-	            	return true;
-	            }
-	        }
-	 
-	        // Calculate hash value for next window of text: Remove
-	        // leading digit, add trailing digit
-	        if ( i < txtLen-pattLen )
-	        {
-	            txtHash = (sigmaLen*(txtHash - txt[i]*h) + txt[i+pattLen])%prime;
-	            // We might get negative value of t, converting it
-	            // to positive
-	            if (txtHash < 0)
-	            txtHash = (txtHash + prime);
-	        }
-	    }
+					if (txt[i + j] != patt[j])
+						break;
+				}
+				// pattern is found.
+				if (j == pattLen) {
+					return true;
+				}
+			}
+
+			// Calculate hash value for next window of text: Remove
+			// leading digit, add trailing digit
+			if (i < txtLen - pattLen) {
+				txtHash = (sigmaLen * (txtHash - txt[i] * h) + txt[i + pattLen]) % prime;
+				// We might get negative value of t, converting it
+				// to positive
+				if (txtHash < 0)
+					txtHash = (txtHash + prime);
+			}
+		}
 		return false;
 	}
 
@@ -189,7 +186,6 @@ public class StringSearch {
 				j++;
 			arr[i] = j;
 		}
-		System.out.println(Arrays.toString(arr));
 		return arr;
 	}
 
@@ -197,10 +193,11 @@ public class StringSearch {
 	 * Just prints the number of iterations.
 	 */
 	private void prtIterations() {
+		int i = innerIterations + outerIterations;
 		System.out.println("Total Iterations in: " + innerIterations);
 		System.out.println("Total Iterations out: " + outerIterations);
-		System.out.println("Total Iterations: ");
-		System.out.println(innerIterations + outerIterations);
+		System.out.println("Total Iterations: " + i);
+
 		innerIterations = 0;
 		outerIterations = 0;
 	}

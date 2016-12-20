@@ -15,6 +15,11 @@ public class HuffmanTree {
 	private char charArr[];
 	private int charFreqs[];
 
+	/**
+	 * Constructor that initializes variables and arrays.
+	 * 
+	 * @param s - the string to compress.
+	 */
 	public HuffmanTree(String s) {
 		this.s = s;
 		buildArrays();
@@ -48,7 +53,7 @@ public class HuffmanTree {
 		// It's frequency should be the same as the total
 		// number of characters in the string.
 		// This is our complete tree.
-		encode(pq.remove(), "0");
+		encode(pq.remove(), "");
 	}
 
 	/**
@@ -70,9 +75,9 @@ public class HuffmanTree {
 			encode(n.getRight(), c);
 		} else {
 			// System.out.println("LEAF-" + code);
-			if (c.length() > 0) {
-				c = c.substring(0, c.length() - 1); // Removes one zero
-			}
+			// if (c.length() > 0) {
+			// c = c.substring(0, c.length() - 1); // Removes one zero
+			// }
 			// Set the code of the node.
 			n.setCode(String.valueOf(c));
 		}
@@ -86,7 +91,8 @@ public class HuffmanTree {
 	 */
 	private void buildArrays() {
 		List<String> original = s.chars().mapToObj(i -> (char) i).map(String::valueOf).collect(Collectors.toList());
-		List<String> duplicateRemoved = s.chars().mapToObj(i -> (char) i).map(String::valueOf).distinct().collect(Collectors.toList());
+		List<String> duplicateRemoved = s.chars().mapToObj(i -> (char) i).map(String::valueOf).distinct()
+				.collect(Collectors.toList());
 
 		ArrayList<Integer> Occurrences = new ArrayList<>();
 		int counter = 1;
@@ -104,20 +110,29 @@ public class HuffmanTree {
 	}
 
 	/**
-	 * Loops through the nodes and arrays to print their values.
+	 * Loops through the nodes and arrays to print their values. Also does some
+	 * calculations to show the number of bits and the percentage.
 	 */
 	public void printEncoding() {
+		int bits = 0;
 		Map<Character, String> ht = new Hashtable<Character, String>();
 		System.out.println("Char  Freq  Code");
 		for (Node n : nodeArray) {
+			bits += n.getFreq() * n.getCode().length();
 			System.out.println("'" + n.getData() + "' -- " + n.getFreq() + " -- '" + n.getCode() + "'");
 			ht.put(n.getData(), n.getCode());
 		}
 		System.out.println("'" + s + "'" + " is encoded as:");
 		char[] arr = s.toCharArray();
 		for (char c : arr) {
-			System.out.println(c + "=" + ht.get(c) + " ");
+			System.out.print(ht.get(c) + " ");
 		}
+		int original = (s.length() * 16);
+		int difference = (s.length() * 16) - bits;
+		float p1 = bits * 1f / original;
+		float p2 = (1 - p1) * 100;
+		System.out.println("\nOrg   compr  diff   percent");
+		System.out.println(original + "----" + bits + "----" + difference + "----" + p2 + "%");
 		System.out.println("\n \n \n");
 	}
 }

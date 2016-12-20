@@ -3,7 +3,7 @@ package assignment3A;
 import java.util.LinkedList;
 
 /**
- * Represents one node in the tree. Has getters and setters for it's value.
+ * Represents one node in the tree. Has getters and setters for it's values.
  * 
  * @author Anton Gustafsson
  *
@@ -25,7 +25,7 @@ public class Node {
 		this();
 		this.text = text;
 	}
-	
+
 	public boolean isWord() {
 		return isWord;
 	}
@@ -41,16 +41,14 @@ public class Node {
 	public void setText(String text) {
 		this.text = text;
 	}
-	
+
 	public LinkedList<Node> getChildren() {
 		return children;
 	}
 
 	@Override
-	public String toString(){
+	public String toString() {
 		return text;
 	}
-	
-	
 
 }

@@ -20,22 +20,17 @@ public class ImageModifier {
 	private final int MAX = 255;
 	private final int MIN = 0;
 
-	public static void main(String[] args) {
-		new ImageModifier();
+	/**
+	 * Constructor for the a method.
+	 */
+	public ImageModifier(String url, float contrast, int brightness) {
+		pointOp(url, contrast, brightness);
 	}
 
 	/**
-	 * Constructor that calls on A method and B method.
+	 * Constructor for the b method.
 	 */
-	public ImageModifier() {
-		// A
-		String url0 = "mushroom.png";
-		float contrast = 1.2f; // 1 is standard
-		int brightness = 3; // 1 is standard
-		pointOp(url0, contrast, brightness);
-		// B
-		String url1 = "template1.png";
-		String url2 = "template2.png";
+	public ImageModifier(String url1, String url2) {
 		mergeImages(url1, url2);
 	}
 

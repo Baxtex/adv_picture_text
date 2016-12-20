@@ -5,20 +5,21 @@ import org.junit.Test;
 
 /**
  * Tests the trie.
+ * 
  * @author Anton Gustafsson
  *
  */
 public class SuffixArrayTest {
 
-	  private SuffixArray st;
+	private SuffixArray st;
 
-	    @Before
-	    public void setUp() {
-	    	st = new SuffixArray("banana");
-	    }
+	@Before
+	public void setUp() {
+		st = new SuffixArray("banana");
+	}
 
-	    @Test
-	    public void testSearch() {
-	    	st.printLongestPrefix("banana");
-	    }
+	@Test
+	public void testSearch() {
+		st.printLongestPrefix("banana");
+	}
 }

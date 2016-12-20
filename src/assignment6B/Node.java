@@ -52,6 +52,7 @@ public class Node implements Comparable<Node> {
 
 	/**
 	 * If left or right child is null, this is a leaf.
+	 * 
 	 * @return
 	 */
 	public boolean isLeafNode() {
@@ -69,13 +70,4 @@ public class Node implements Comparable<Node> {
 		}
 		return -1;
 	}
-
-	/**
-	 * Returns this node's data.
-	 */
-	@Override
-	public String toString() {
-		return "Node " + data + ", " + freq + ", " + code;
-	}
-
 }
