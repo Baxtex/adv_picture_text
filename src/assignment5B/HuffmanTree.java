@@ -75,9 +75,9 @@ public class HuffmanTree {
 			encode(n.getRight(), c);
 		} else {
 			// System.out.println("LEAF-" + code);
-			// if (c.length() > 0) {
-			// c = c.substring(0, c.length() - 1); // Removes one zero
-			// }
+			if (c.length() > 0) {
+				c = c.substring(0, c.length() - 1); // Removes one zero
+			}
 			// Set the code of the node.
 			n.setCode(String.valueOf(c));
 		}

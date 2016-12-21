@@ -10,18 +10,23 @@ import org.junit.Test;
  */
 public class EdgeDetectionTest {
 
+	// @Test
+	// public void testSearch1() {
+	// EdgeDetection ed = new EdgeDetection("rubik.jpg", 65);
+	// }
+	//
+	// @Test
+	// public void testSearch2() {
+	// EdgeDetection ed = new EdgeDetection("bricks.jpg", 70);
+	// }
+	//
+	// @Test
+	// public void testSearch3() {
+	// EdgeDetection ed = new EdgeDetection("filledCircle.png", 80);
+	// }
+	//
 	@Test
-	public void testSearch1() {
-		EdgeDetection ed = new EdgeDetection("rubik.jpg", 65);
-	}
-
-	@Test
-	public void testSearch2() {
-		EdgeDetection ed = new EdgeDetection("bricks.jpg", 70);
-	}
-
-	@Test
-	public void testSearch3() {
-		EdgeDetection ed = new EdgeDetection("filledCircle.png", 80);
+	public void testSearch4() {
+		EdgeDetection ed = new EdgeDetection("valve.png", 100);
 	}
 }

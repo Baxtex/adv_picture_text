@@ -162,6 +162,7 @@ public class ImageHuffmanTree {
 		int difference = (imageSize - bits);
 		float p1 = bits * 1f / imageSize;
 		float p2 = (1 - (bits * 1f / imageSize)) * 100;
+		System.out.println("Image: '" + url + "'");
 		System.out.println("Original compressed difference percent");
 		System.out.println(imageSize + "--" + bits + "---" + difference + "--" + p2 + "%");
 		System.out.println("\n\n");

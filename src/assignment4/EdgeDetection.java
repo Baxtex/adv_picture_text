@@ -41,23 +41,30 @@ public class EdgeDetection {
 		WritableRaster outraster = resImage.getRaster();
 
 		System.out.println("Size: " + width + "X" + height + " Pixels ");
+		int[][] kernelX = { { -1, 0, 1 }, { -2, 0, 2 }, { -1, 0, 1 } };
+		int[][] kernelY = { { -1, -2, -1 }, { 0, 0, 0 }, { 1, 2, 1 } };
+
+		// Loops over all pixels in the array but ignores the edges.
 		for (int i = 1; i < width - 2; i++) {
 			for (int j = 1; j < height - 2; j++) {
+				double magX = 0;
+				double magY = 0;
+				double mag = 0;
 
-				// Compute filter result, loops over in a
-				// box pattern.(9x9). Ignores edges.
-				int sum = 0;
-				for (int x = -1; x <= 1; x++) {
-					for (int y = -1; y <= 1; y++) {
-						int jy = i + y;
-						int jx = j + x;
-						int p = inraster.getSample(jy, jx, 0);
-						sum = sum + p;
+				// Loops over in a 3x3 box pattern over each pixel.
+				for (int a = 0; a < 3; a++) {
+					for (int b = 0; b < 3; b++) {
+						int ia = i + a;
+						int jb = j + b;
+						int s = inraster.getSample(ia, jb, 0);
+						magX += s * kernelX[a][b];
+						magY += s * kernelY[b][a];
 					}
 				}
-				int q = (int) Math.round(sum / 9.0);
-				q = checkMaxMin(q);
-				outraster.setSample(i, j, 0, q);
+
+				// Calculate the new magnitude and set the sample.
+				mag = Math.sqrt((magX * magX) + (magY * magY));
+				outraster.setSample(i, j, 0, mag);
 			}
 		}
 		writeImage(resImage, "jpg", "EdgeDetection " + url);
