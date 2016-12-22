@@ -18,19 +18,27 @@ import javax.imageio.ImageIO;
  */
 public class EdgeDetection {
 
-	private int threshold;// Changes depending on image
-	private final int MAX = 255;// Represent white;
-	private final int MIN = 0;// Represent black;
+	private int threshold;
+	private final int WHITE = 255;
+	private final int BLACK = 0;
 
-	public EdgeDetection(String url0, int threshold) {
+	/**
+	 * Initializes filepath and threshold.
+	 * 
+	 * @param url0 - String the name of the image.
+	 * @param threshold - int the threshold for deciding if black or white.
+	 */
+	public EdgeDetection(String url, int threshold) {
 		this.threshold = threshold;
-		detect(url0);
+		detect(url);
 	}
 
 	/**
-	 * Detects edges.
+	 * Detects edges with the help of sobel operator. For each pixel in the
+	 * image, except the edges, get the sorrunding pixels in a 3x3 pattern. Then
+	 * calculate the magnitude for that block and check it with the threshold.
 	 * 
-	 * @param url - filepath to the iamge.
+	 * @param url - file name of the image.
 	 */
 	private void detect(String url) {
 		BufferedImage orgImage = readImage(url);
@@ -39,35 +47,43 @@ public class EdgeDetection {
 		BufferedImage resImage = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_BINARY);
 		WritableRaster inraster = orgImage.getRaster();
 		WritableRaster outraster = resImage.getRaster();
+		int[][] pixels = new int[3][3];
+		System.out.println("Name: " + url + " Size: " + width + "X" + height + " Pixels, " + "Threshold: " + threshold);
 
-		System.out.println("Size: " + width + "X" + height + " Pixels ");
-		int[][] kernelX = { { -1, 0, 1 }, { -2, 0, 2 }, { -1, 0, 1 } };
-		int[][] kernelY = { { -1, -2, -1 }, { 0, 0, 0 }, { 1, 2, 1 } };
-
-		// Loops over all pixels in the array but ignores the edges.
 		for (int i = 1; i < width - 2; i++) {
 			for (int j = 1; j < height - 2; j++) {
-				double magX = 0;
-				double magY = 0;
-				double mag = 0;
 
-				// Loops over in a 3x3 box pattern over each pixel.
-				for (int a = 0; a < 3; a++) {
-					for (int b = 0; b < 3; b++) {
-						int ia = i + a;
-						int jb = j + b;
-						int s = inraster.getSample(ia, jb, 0);
-						magX += s * kernelX[a][b];
-						magY += s * kernelY[b][a];
-					}
-				}
+				pixels[0][0] = inraster.getSample(i - 1, j - 1, 0);
+				pixels[0][1] = inraster.getSample(i - 1, j, 0);
+				pixels[0][2] = inraster.getSample(i - 1, j + 1, 0);
+				pixels[1][0] = inraster.getSample(i, j - 1, 0);
+				pixels[1][2] = inraster.getSample(i, j + 1, 0);
+				pixels[2][0] = inraster.getSample(i + 1, j - 1, 0);
+				pixels[2][1] = inraster.getSample(i + 1, j, 0);
+				pixels[2][2] = inraster.getSample(i + 1, j + 1, 0);
 
-				// Calculate the new magnitude and set the sample.
-				mag = Math.sqrt((magX * magX) + (magY * magY));
-				outraster.setSample(i, j, 0, mag);
+				int value = (int) mag(pixels);
+				value = checkMaxMin(value);
+				outraster.setSample(i, j, 0, value);
 			}
 		}
 		writeImage(resImage, "jpg", "EdgeDetection " + url);
+	}
+
+	/**
+	 * Calculates the magnitude.
+	 * 
+	 * @param pixelMatrix
+	 * @return the magnitude.
+	 */
+	private double mag(int[][] pixelMatrix) {
+		int iX = (pixelMatrix[0][0] * -1) + (pixelMatrix[0][1] * -2) + (pixelMatrix[0][2] * -1) + (pixelMatrix[2][0])
+				+ (pixelMatrix[2][1] * 2) + (pixelMatrix[2][2] * 1);
+
+		int jY = (pixelMatrix[0][0]) + (pixelMatrix[0][2] * -1) + (pixelMatrix[1][0] * 2) + (pixelMatrix[1][2] * -2)
+				+ (pixelMatrix[2][0]) + (pixelMatrix[2][2] * -1);
+
+		return Math.sqrt((iX * iX) + (jY * jY));
 	}
 
 	/**
@@ -97,9 +113,9 @@ public class EdgeDetection {
 	 */
 	private int checkMaxMin(int p) {
 		if (p > threshold) {
-			p = MIN;
+			p = WHITE;
 		} else {
-			p = MAX;
+			p = BLACK;
 		}
 		return p;
 	}
@@ -117,6 +133,6 @@ public class EdgeDetection {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("Morphed image: " + title);
+		System.out.println("Edge Detected: " + title + "\n");
 	}
 }
