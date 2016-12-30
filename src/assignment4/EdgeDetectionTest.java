@@ -29,4 +29,9 @@ public class EdgeDetectionTest {
 	public void testSearch4() {
 		EdgeDetection ed = new EdgeDetection("valve.png", 100);
 	}
+	
+	@Test
+	public void testSearch5() {
+		EdgeDetection ed = new EdgeDetection("ernst_pic1.jpg", 100);
+	}
 }

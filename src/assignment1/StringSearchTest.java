@@ -9,19 +9,21 @@ import org.junit.Test;
  *
  */
 public class StringSearchTest {
+	String t = "aaaaaaaab";
+	String p = "aaaab";
 
 	@Test
-	public void testSearch1() {
-		StringSearch ss = new StringSearch("aaaaaaaab", "aaaab", "naive");
+	public void testNaive() {
+		StringSearch ss = StringSearches.naiveStringSearch(t, p);
 	}
 
 	@Test
-	public void testSearch2() {
-		StringSearch ss = new StringSearch("aaaaaaaab", "aaaab", "rabin");
+	public void testRabinKarp() {
+		StringSearch ss = StringSearches.rabinKarpSearch(t, p);
 	}
 
 	@Test
-	public void testSearch3() {
-		StringSearch ss = new StringSearch("aaaaaaaab", "aaaab", "kmp");
+	public void testKnutMorrisPratt() {
+		StringSearch ss = StringSearches.kmpSearch(t, p);
 	}
 }
