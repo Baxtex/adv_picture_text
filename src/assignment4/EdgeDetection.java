@@ -35,7 +35,7 @@ public class EdgeDetection {
 
 	/**
 	 * Detects edges with the help of sobel operator. For each pixel in the
-	 * image, except the edges, get the sorrunding pixels in a 3x3 pattern. Then
+	 * image, except the edges, get the srrunding pixels in a 3x3 pattern. Then
 	 * calculate the magnitude for that block and check it with the threshold.
 	 * 
 	 * @param url - file name of the image.

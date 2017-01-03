@@ -10,6 +10,15 @@ public class StringSearch {
 	private int outerIterations, innerIterations;
 	private long totalNS;
 
+	/**
+	 * Calls the appropiate method to conduct a search of pattern in a text.
+	 * Also contains variables to count the number of iterations and time that
+	 * the operation takes.
+	 * 
+	 * @param text - String to search in
+	 * @param pattern - String to look for.
+	 * @param method - the method to call.
+	 */
 	public StringSearch(String text, String pattern, String method) {
 
 		boolean exist = false;
@@ -42,9 +51,9 @@ public class StringSearch {
 	}
 
 	/**
-	 * Algorithm that finds a certain pattern in a string. Naive Search. Basicly
-	 * compares each and every letter if they match. If the pattern is found,
-	 * return true.
+	 * Algorithm that finds a certain pattern in a string. Naive Search.
+	 * Basically compares each and every letter if they match. If the pattern is
+	 * found, return true.
 	 * 
 	 * @param text - String the text to search in.
 	 * @param pattern - String the pattern to look for.
@@ -140,6 +149,27 @@ public class StringSearch {
 	}
 
 	/**
+	 * Builds a "Partial Match" or "failure table" that the KMP algorithmen uses
+	 * to decide not to match any character more than once.
+	 * 
+	 * @param pattern
+	 * @return
+	 */
+	private int[] computeTable(String pattern) {
+		int[] arr = new int[pattern.length()];
+		arr[0] = 0; // Base case
+		for (int i = 1; i < pattern.length(); i++) {
+			int j = arr[i - 1];
+			while (j > 0 && pattern.charAt(i) != pattern.charAt(j))
+				j = arr[j - 1];
+			if (pattern.charAt(i) == pattern.charAt(j))
+				j++;
+			arr[i] = j;
+		}
+		return arr;
+	}
+
+	/**
 	 * Algorithm that finds a certain pattern in a string. KMP search. KMP tries
 	 * to compare as little as possible. If we already have comapared a substing
 	 * and it doesn't containg anything, we can skip that section.
@@ -166,27 +196,6 @@ public class StringSearch {
 			}
 		}
 		return false;
-	}
-
-	/**
-	 * Builds a "Partial Match" or "failure table" that the KMP algorithmen uses
-	 * to decide not to match any character more than once.
-	 * 
-	 * @param pattern
-	 * @return
-	 */
-	private int[] computeTable(String pattern) {
-		int[] arr = new int[pattern.length()];
-		arr[0] = 0; // Base case
-		for (int i = 1; i < pattern.length(); i++) {
-			int j = arr[i - 1];
-			while (j > 0 && pattern.charAt(i) != pattern.charAt(j))
-				j = arr[j - 1];
-			if (pattern.charAt(i) == pattern.charAt(j))
-				j++;
-			arr[i] = j;
-		}
-		return arr;
 	}
 
 	/**

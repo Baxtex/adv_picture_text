@@ -117,9 +117,6 @@ public class Trie {
 	 * @param c - the character to add.
 	 */
 	private void insertNode(Node node, Character c) {
-		// if (childContain(node.getChildren(), String.valueOf(c))) {
-		// return;
-		// }
 		Node next = new Node(c.toString());
 		node.getChildren().add(next);
 	}

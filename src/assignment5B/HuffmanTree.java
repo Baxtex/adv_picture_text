@@ -114,6 +114,7 @@ public class HuffmanTree {
 	 * calculations to show the number of bits and the percentage.
 	 */
 	public void printEncoding() {
+		int CHARSIZE = 16;
 		int bits = 0;
 		Map<Character, String> ht = new Hashtable<Character, String>();
 		System.out.println("Char  Freq  Code");
@@ -127,8 +128,8 @@ public class HuffmanTree {
 		for (char c : arr) {
 			System.out.print(ht.get(c) + " ");
 		}
-		int original = (s.length() * 16);
-		int difference = (s.length() * 16) - bits;
+		int original = (s.length() * CHARSIZE);
+		int difference = (s.length() * CHARSIZE) - bits;
 		float p1 = bits * 1f / original;
 		float p2 = (1 - p1) * 100;
 		System.out.println("\nOrg   compr  diff   percent");

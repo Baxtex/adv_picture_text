@@ -30,8 +30,8 @@ public class ImageModifier {
 	/**
 	 * Constructor for the b method.
 	 */
-	public ImageModifier(String url1, String url2) {
-		mergeImages(url1, url2);
+	public ImageModifier(String url0, String url1,String url2) {
+		mergeImages(url0, url1, url2);
 	}
 
 	/**
@@ -71,36 +71,40 @@ public class ImageModifier {
 	}
 
 	/**
-	 * Merges 2 grayscale images pixel values and creates a new image with them.
+	 * Merges 2 grayscale images pixel alpha values and creates a new image with them.
 	 * 
-	 * @param URLA - the filepath of the first image.
-	 * @param URLB - the filepath of the second image.
+	 * @param url0 - the filepath of the first image.
+	 * @param url1 - the filepath of the second image.
 	 */
-	private void mergeImages(String url1, String url2) {
-		BufferedImage img0 = readImage(url1);
-		BufferedImage img1 = readImage(url2);
+	private void mergeImages(String url0, String url1, String url2) {
+		BufferedImage img0 = readImage(url0);
+		BufferedImage img1 = readImage(url1);
+		BufferedImage img2 = readImage(url2);
 
 		int width = img0.getWidth();
 		int height = img0.getHeight();
 
-		WritableRaster inraster0 = img0.getRaster();
-		WritableRaster inraster1 = img1.getRaster();
+		WritableRaster raster0 = img0.getRaster();
+		WritableRaster raster1 = img1.getRaster();
+		WritableRaster raster2 = img2.getRaster();
 
 		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_BINARY);
 		WritableRaster outraster = image.getRaster();
 
+		float alpha = 0f;
+		
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
-				int valueA0 = inraster0.getSample(i, j, 0);
-				int valueA1 = inraster1.getSample(i, j, 0);
-				// Only need to check once as we are dealing with a binary
-				// image.
-				int newValue = valueA0 + valueA1;
-				newValue = checkMaxMin(newValue);
-				outraster.setSample(i, j, 0, newValue);
+				
+				alpha = raster2.getSampleFloat(i, j, 0) / 255;
+				float a0 = alpha * raster1.getSample(i, j, 0);
+				float a1 =(1-alpha)*raster0.getSample(i, j, 0);
+				
+				outraster.setSample(i, j, 0, a0 + a1);
+
 			}
 		}
-		writeImage(image, "png", "MergedImages " + url1 + " " + url2);
+		writeImage(image, "png", "MergedImages " + url0 + " " + url1 + " " + url2);
 	}
 
 	/**

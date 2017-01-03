@@ -1,7 +1,8 @@
 package assignment5B;
 
 /**
- * One node in the Huffman tree.
+ * One node in the Huffman tree. Has getters and setters and a implementation of the
+ * Comparable interface so we can compare the nodes when in the heap.
  * 
  * @author Anton Gustafsson
  *

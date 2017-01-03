@@ -1,7 +1,7 @@
 package assignment3B;
 
 /**
- * Program that builds an array with suffixes from a given string.
+ * Program that builds an sorted array with suffixes from a given string.
  * 
  * @author Anton Gustafsson
  *
@@ -104,7 +104,7 @@ public class SuffixArray {
 
 		// Process each suffix.
 		for (int i = 0; i < length; i++) {
-			System.out.println("\n Now on index: " + i + " and invIndex is : " + invIndex[i]);
+//			System.out.println("\n Now on index: " + i + " and invIndex is : " + invIndex[i]);
 
 			// When we reach suffix at length-1 we are at the last suffix, and
 			// therefore we can't compare it to nothing, so
@@ -145,7 +145,7 @@ public class SuffixArray {
 	}
 
 	/**
-	 * Prints the lcp array.
+	 * Prints the longestCommonPrefix array.
 	 * 
 	 * @param lcp
 	 */
