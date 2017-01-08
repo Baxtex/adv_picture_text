@@ -37,8 +37,11 @@ public class HuffmanTree {
 		Node left, right, top;
 		// Put the Nodes from the node array in a min-heap/priorityQueue.
 		for (int i = 0; i < nodeArray.length; i++) {
+			System.out.println(nodeArray[i]);
 			pq.add(nodeArray[i]);
 		}
+		System.out.println(pq);
+		
 
 		// Find two trees with least freq and creates a new node and inserts it.
 		while (pq.size() > 1) {
