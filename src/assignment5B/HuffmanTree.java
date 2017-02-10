@@ -84,6 +84,7 @@ public class HuffmanTree {
 			// Set the code of the node.
 			n.setCode(String.valueOf(c));
 		}
+		System.out.println(n.toString() + " is " + c);
 	}
 
 	/**

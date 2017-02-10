@@ -17,7 +17,7 @@ public class SuffixArray {
 	 * @param text
 	 */
 	public SuffixArray(String text) {
-		System.out.println("ADDING: " + text);
+		System.out.println("String: " + text);
 		// setup variables
 		length = text.length();
 		index = new int[length];
@@ -29,8 +29,8 @@ public class SuffixArray {
 			index[i] = i;
 			this.text[i] = text.substring(i, i + 1);
 		}
-		System.out.println(" ");
-		printArray();
+		// System.out.println(" ");
+		// printArray();
 		System.out.println(" ");
 		build();
 	}
@@ -45,9 +45,9 @@ public class SuffixArray {
 			// Creates suffixes .
 			for (int txtI = i; txtI < length; txtI++) {
 				txt += text[txtI];
-				System.out.println(txt);
+				// System.out.println(txt);
 			}
-			System.out.println("Adding suffix to array: " + txt);
+			// System.out.println("Adding suffix to array: " + txt);
 			suffix[i] = txt;
 		}
 		System.out.println("");
@@ -64,20 +64,24 @@ public class SuffixArray {
 
 			// Then we loop from the beginning, starting at 0
 			for (y = x - 1; y >= 0; y--) {
-				System.out.println("y- " + y);
+				// System.out.println("y- " + y);
 				if (suffix[y].compareTo(key) > 0) {
-					System.out.println(suffix[y] + " is lexicographically less then " + key);
-					System.out.println(suffix[y + 1] + " is set to " + suffix[y]);
+					// System.out.println(suffix[y] + " is lexicographically
+					// less then " + key);
+					// System.out.println(suffix[y + 1] + " is set to " +
+					// suffix[y]);
 					suffix[y + 1] = suffix[y];
 					index[y + 1] = index[y];
 				} else {
-					System.out.println(suffix[y] + " is lexicographically greater  or equal " + key);
-					System.out.println("Break, we have found the right place");
+					// System.out.println(suffix[y] + " is lexicographically
+					// greater or equal " + key);
+					// System.out.println("Break, we have found the right
+					// place");
 					break;
 				}
-				printArray();
+				// printArray();
 			}
-			System.out.println("New loop");
+			// System.out.println("New loop");
 			suffix[y + 1] = key;
 			index[y + 1] = keyI;
 		}
@@ -86,52 +90,25 @@ public class SuffixArray {
 		printArray();
 	}
 
-	/**
-	 * Prints the longest common prefix (lcp) for the given string using kasai's
-	 * algoritm.
-	 * 
-	 */
 	public void printLongestPrefix(String s) {
-		int k = 0;
-		char[] chars = s.toCharArray();
-		int[] lcp = new int[length]; // The resulting lcp array.
-		int[] invIndex = new int[length]; // the suffix start pos in reverse
+		System.out.println("\nSearching for longest prefix for '" + s + "'");
+		
+		int prefixIndex = 0;
+		String longestPrefix = "None";
+		for (int i = 0; i < suffix.length; i++) {
+			
+			String currPrefix = suffix[i];
+			
+			if (currPrefix.length() > 3 && currPrefix.contains(s)) {
 
-		// Put the suffix array in inverse. so we can find the next suffix.
-		for (int i = 0; i < length; i++) {
-			invIndex[index[i]] = i;
-		}
-
-		// Process each suffix.
-		for (int i = 0; i < length; i++) {
-//			System.out.println("\n Now on index: " + i + " and invIndex is : " + invIndex[i]);
-
-			// When we reach suffix at length-1 we are at the last suffix, and
-			// therefore we can't compare it to nothing, so
-			// we set k = 0.
-			if (invIndex[i] == length - 1) {
-				k = 0;
-				continue;// "Breaks" the current iteration, but not the loop.
-			}
-
-			// Index of the next suffix.
-			int y = index[invIndex[i] + 1];
-
-			// Start matching first suffix with second suffix. If their prefixes
-			// have the same length, set k to that
-			// prefix's length.
-			// While(prefixA < length && prefixB<length && suffixA == suffixB)
-
-			while (i + k < length && y + k < length && chars[i + k] == chars[y + k]) {
-				k++;
-			}
-			lcp[invIndex[i]] = k; // lcp for the current suffix.
-			// Deletes the starting character.
-			if (k > 0) {
-				k--;
+				int currPrefixIndex = currPrefix.indexOf(s);
+				
+				if (currPrefixIndex > prefixIndex) {
+					longestPrefix = currPrefix.substring(0, currPrefixIndex);
+				}
 			}
 		}
-		prtLCP(lcp);
+		System.out.println("Longest prefix is '" + longestPrefix + "'");
 	}
 
 	/**

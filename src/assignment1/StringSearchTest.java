@@ -3,7 +3,7 @@ package assignment1;
 import org.junit.Test;
 
 /**
- * Tests the HuffmanTree.
+ * Tests the String search.
  * 
  * @author Anton Gustafsson
  *

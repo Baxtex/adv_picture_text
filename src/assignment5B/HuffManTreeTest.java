@@ -11,13 +11,6 @@ import org.junit.Test;
 public class HuffManTreeTest {
 
 	@Test
-	public void testSearch1() {
-		HuffmanTree ht = new HuffmanTree("Mississippi_River");
-		ht.printEncoding();
-
-	}
-
-	@Test
 	public void testSearch2() {
 		HuffmanTree ht = new HuffmanTree("banana");
 		ht.printEncoding();
@@ -33,7 +26,7 @@ public class HuffManTreeTest {
 
 	@Test
 	public void testSearch4() {
-		HuffmanTree ht = new HuffmanTree("ACTGGTCAGTCAGGTCGATAGC");
+		HuffmanTree ht = new HuffmanTree("abcdefghc");
 		ht.printEncoding();
 
 	}

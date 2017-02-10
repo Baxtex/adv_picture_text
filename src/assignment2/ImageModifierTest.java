@@ -18,11 +18,12 @@ public class ImageModifierTest {
 
 	@Test
 	public void testBrightCont2() {
-//		ImageModifier im = new ImageModifier("ernst_pic1.jpg", 1.5f, 10);
+		ImageModifier im = new ImageModifier("ernst_pic1.jpg", 1.5f, 110);
 	}
 
-	@Test
-	public void testMerge1() {
-		ImageModifier im = new ImageModifier("template1.png", "template2.png", "template3.png");
-	}
+	// @Test
+	// public void testMerge1() {
+	// ImageModifier im = new ImageModifier("template1.png", "template2.png",
+	// "template3.png");
+	// }
 }
