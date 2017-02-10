@@ -12,23 +12,24 @@ public class HuffmanTree {
 	private PriorityQueue<Node> pq;
 	private Node[] nodeArray;
 	private String s;
-	private char charArr[];
-	private int charFreqs[];
+	private char chars[];
+	private int freqs[];
 
 	/**
 	 * Constructor that initializes variables and arrays.
 	 * 
-	 * @param s - the string to compress.
+	 * @param s- the string to compress.
 	 */
 	public HuffmanTree(String s) {
+		System.out.println("String to encode: '" + s + "'");
 		this.s = s;
 		buildArrays();
-		pq = new PriorityQueue<Node>(charFreqs.length);
-		nodeArray = new Node[charArr.length];
+		pq = new PriorityQueue<Node>(freqs.length);
+		nodeArray = new Node[chars.length];
 
 		// Create Nodes from the chars and occurrences and put them in a array.
-		for (int i = 0; i < charArr.length; i++) {
-			nodeArray[i] = new Node(charArr[i], charFreqs[i]);
+		for (int i = 0; i < chars.length; i++) {
+			nodeArray[i] = new Node(chars[i], freqs[i]);
 		}
 		buildTree();
 	}
@@ -37,12 +38,8 @@ public class HuffmanTree {
 		Node left, right, top;
 		// Put the Nodes from the node array in a min-heap/priorityQueue.
 		for (int i = 0; i < nodeArray.length; i++) {
-			System.out.println(nodeArray[i]);
 			pq.add(nodeArray[i]);
 		}
-		System.out.println(pq);
-		
-
 		// Find two trees with least freq and creates a new node and inserts it.
 		while (pq.size() > 1) {
 			left = pq.remove();
@@ -56,35 +53,30 @@ public class HuffmanTree {
 		// It's frequency should be the same as the total
 		// number of characters in the string.
 		// This is our complete tree.
-		encode(pq.remove(), "");
+		encode(pq.remove(), 0);
 	}
 
 	/**
 	 * Set's the encoding for every node by depth first traversal through the
-	 * tree.
+	 * tree. Used recursivly and using bitwise operators.
 	 * 
 	 * @param n - the current node.
 	 * @param c - the code for the current node.
 	 */
-	private void encode(Node n, String c) {
+	private int encode(Node n, int c) {
+		
 		if (!n.isLeafNode()) {
 			// While going left append 0
-			// System.out.println("LEFT");
-			c += 0;
-			encode(n.getLeft(), c);
+			c = c<< 1;
+			c = encode(n.getLeft(), c);
 			// while going right, append 1
-			// System.out.println("RIGHT");
-			c += 1;
-			encode(n.getRight(), c);
+			 c = (c << 1) | 1;
+			 c =encode(n.getRight(), c);
 		} else {
-			// System.out.println("LEAF-" + code);
-			if (c.length() > 0) {
-				c = c.substring(0, c.length() - 1); // Removes one zero
-			}
 			// Set the code of the node.
-			n.setCode(String.valueOf(c));
+			n.setCode(c);
 		}
-		System.out.println(n.toString() + " is " + c);
+		return c >> 1;
 	}
 
 	/**
@@ -105,27 +97,28 @@ public class HuffmanTree {
 			Occurrences.add(counter);
 		}
 		// Assign the values to the arrays:
-		charFreqs = new int[duplicateRemoved.size()];
-		charArr = new char[duplicateRemoved.size()];
-		for (int i = 0; i < charArr.length; i++) {
-			charArr[i] = duplicateRemoved.get(i).charAt(0);
-			charFreqs[i] = Occurrences.get(i);
+		freqs = new int[duplicateRemoved.size()];
+		chars = new char[duplicateRemoved.size()];
+		for (int i = 0; i < chars.length; i++) {
+			chars[i] = duplicateRemoved.get(i).charAt(0);
+			freqs[i] = Occurrences.get(i);
 		}
 	}
 
 	/**
+	 * Just for pretty printing all the values.
 	 * Loops through the nodes and arrays to print their values. Also does some
 	 * calculations to show the number of bits and the percentage.
 	 */
 	public void printEncoding() {
 		int CHARSIZE = 16;
 		int bits = 0;
-		Map<Character, String> ht = new Hashtable<Character, String>();
-		System.out.println("Char  Freq  Code");
+		Map<Character, String> ht = new Hashtable<>();
+		System.out.println("Char,  Freq,  Code");
 		for (Node n : nodeArray) {
-			bits += n.getFreq() * n.getCode().length();
-			System.out.println("'" + n.getData() + "' -- " + n.getFreq() + " -- '" + n.getCode() + "'");
-			ht.put(n.getData(), n.getCode());
+			bits += n.getFreq() * n.getCodeAsString().length(); 
+			System.out.println("'" + n.getData() + "' -- " + n.getFreq() + " -- '" + n.getCodeAsString() + "'");
+			ht.put(n.getData(), n.getCodeAsString());
 		}
 		System.out.println("'" + s + "'" + " is encoded as:");
 		char[] arr = s.toCharArray();
@@ -138,6 +131,6 @@ public class HuffmanTree {
 		float p2 = (1 - p1) * 100;
 		System.out.println("\nOrg   compr  diff   percent");
 		System.out.println(original + "----" + bits + "----" + difference + "----" + p2 + "%");
-		System.out.println("\n \n \n");
+		System.out.println("\n");
 	}
 }

@@ -1,0 +1,12 @@
+
+#taPText{
+-fx-focus-color: transparent;
+-fx-text-wrap: true;
+-fx-editable: false;
+}
+
+#taEText{
+-fx-focus-color: transparent;
+-fx-text-wrap: true;
+-fx-editable: false;
+}

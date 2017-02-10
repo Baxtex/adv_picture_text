@@ -13,7 +13,7 @@ public class Node implements Comparable<Node> {
 	private int freq;
 	private Node left;
 	private Node right;
-	private String code;
+	private int code = -1;
 
 	public Node(char data, int freq) {
 		this.data = data;
@@ -39,11 +39,15 @@ public class Node implements Comparable<Node> {
 		return right;
 	}
 
-	public String getCode() {
+	public int getCode() {
 		return code;
 	}
+	
+	public String getCodeAsString() {
+		return Integer.toBinaryString(code);
+	}
 
-	public void setCode(String code) {
+	public void setCode(int code) {
 		this.code = code;
 	}
 
@@ -74,6 +78,6 @@ public class Node implements Comparable<Node> {
 	
 	@Override
 	public String toString() {
-		return String.valueOf(data) +" " + freq;
+		return String.valueOf(data) +"     " + freq;
 	}
 }

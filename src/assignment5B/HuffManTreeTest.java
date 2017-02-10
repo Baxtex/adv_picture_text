@@ -11,22 +11,25 @@ import org.junit.Test;
 public class HuffManTreeTest {
 
 	@Test
+	public void testSearch1() {
+		System.out.println("Test 1");
+		HuffmanTree ht = new HuffmanTree("abcdefghcccc");
+		ht.printEncoding();
+
+	}
+
+	@Test
 	public void testSearch2() {
-		HuffmanTree ht = new HuffmanTree("banana");
+		System.out.println("Test 2");
+		HuffmanTree ht = new HuffmanTree("abcccccccdddddfgh");
 		ht.printEncoding();
 
 	}
 
 	@Test
 	public void testSearch3() {
-		HuffmanTree ht = new HuffmanTree("abcccccccdfghh");
-		ht.printEncoding();
-
-	}
-
-	@Test
-	public void testSearch4() {
-		HuffmanTree ht = new HuffmanTree("abcdefghc");
+		System.out.println("Test 3");
+		HuffmanTree ht = new HuffmanTree("Hejsan detta är ett test!");
 		ht.printEncoding();
 
 	}

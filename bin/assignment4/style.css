@@ -1,0 +1,29 @@
+.root{
+      -fx-background-color: #6A6A68;
+}
+#lblFind{
+    -fx-text-fill: #FFFFFF;
+}
+#lblReplace{
+    -fx-text-fill: #FFFFFF;
+}
+#lblNbr{
+    -fx-text-fill: #FFFFFF;
+}
+#lblNbrIterations{
+    -fx-text-fill: #FFFFFF;
+}
+#lblFileName{
+    -fx-text-fill: #FFFFFF;
+}
+#srcText{
+
+   -fx-text-wrap: true;
+   -fx-editable: false;
+}
+#destText{
+
+   -fx-text-wrap: true;
+   -fx-editable: false;
+}
+

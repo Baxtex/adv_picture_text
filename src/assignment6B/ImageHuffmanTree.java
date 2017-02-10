@@ -35,6 +35,7 @@ public class ImageHuffmanTree {
 	 * Constructor that initializes variables and arrays.
 	 */
 	public ImageHuffmanTree(String url) {
+		System.out.println("picture to encode: " + url);
 		this.url = url;
 		saveColors();
 		nodeArray = new Node[pixelArr.length];

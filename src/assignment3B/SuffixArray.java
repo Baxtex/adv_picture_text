@@ -90,19 +90,24 @@ public class SuffixArray {
 		printArray();
 	}
 
+	/**
+	 * Finds and prints the longest prefix for the given string.
+	 * 
+	 * @param s
+	 */
 	public void printLongestPrefix(String s) {
 		System.out.println("\nSearching for longest prefix for '" + s + "'");
-		
+
 		int prefixIndex = 0;
 		String longestPrefix = "None";
 		for (int i = 0; i < suffix.length; i++) {
-			
+
 			String currPrefix = suffix[i];
-			
+
 			if (currPrefix.length() > 3 && currPrefix.contains(s)) {
 
 				int currPrefixIndex = currPrefix.indexOf(s);
-				
+
 				if (currPrefixIndex > prefixIndex) {
 					longestPrefix = currPrefix.substring(0, currPrefixIndex);
 				}
