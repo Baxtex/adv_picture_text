@@ -11,12 +11,14 @@ import org.junit.Test;
 public class ImageHuffManTreeTest {
 
 	@Test
-	public void testSearch1() {
-		ImageHuffmanTree iht = new ImageHuffmanTree("blackWhite.jpg");
+	public void testImageHFT1() {
+		System.out.println("Test1");
+		new ImageHuffmanTree("ernst_pic1.jpg");
 	}
 
 	@Test
-	public void testSearch2() {
-		ImageHuffmanTree iht = new ImageHuffmanTree("ernst_pic1.jpg");
+	public void testImageHFT2() {
+		System.out.println("Test2");
+		new ImageHuffmanTree("blackWhite.jpg");
 	}
 }

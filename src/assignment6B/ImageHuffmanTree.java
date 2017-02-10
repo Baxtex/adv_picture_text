@@ -117,34 +117,30 @@ public class ImageHuffmanTree {
 		// It's frequency should be the same as the total
 		// number of characters in the string.
 		// This is our complete tree.
-		encode(pq.remove(), "");
+		encode(pq.remove(), 0);
 	}
 
 	/**
 	 * Set's the encoding for every node by depth first traversal through the
-	 * tree.
+	 * tree. Used recursivly and using bitwise operators.
 	 * 
 	 * @param n - the current node.
 	 * @param c - the code for the current node.
 	 */
-	private void encode(Node n, String c) {
+	private int encode(Node n, int c) {
+
 		if (!n.isLeafNode()) {
 			// While going left append 0
-			// System.out.println("LEFT");
-			c += 0;
-			encode(n.getLeft(), c);
+			c = c << 1;
+			c = encode(n.getLeft(), c);
 			// while going right, append 1
-			// System.out.println("RIGHT");
-			c += 1;
-			encode(n.getRight(), c);
+			c = (c << 1) | 1;
+			c = encode(n.getRight(), c);
 		} else {
-			// System.out.println("LEAF-" + code);
 			// Set the code of the node.
-			if (c.length() > 0) {
-				c = c.substring(0, c.length() - 1); // Removes one zero
-			}
-			n.setCode(String.valueOf(c));
+			n.setCode(c);
 		}
+		return c >> 1;
 	}
 
 	/**
@@ -152,12 +148,11 @@ public class ImageHuffmanTree {
 	 * calculations to show the number of bits and the percentage.
 	 */
 	public void printEncoding() {
-		System.out.println("color   Freq    Code   bits(freq*nbr of bits)");
+		System.out.println("color   Freq    Code   ");
 		int bits = 0;
 		for (Node n : nodeArray) {
-			bits += n.getFreq() * n.getCode().length();
-			System.out.println("'" + n.getData() + "' -- " + n.getFreq() + " -- '" + n.getCode() + "'" + "--"
-					+ n.getFreq() * n.getCode().length());
+			bits += n.getFreq() * n.getCodeAsString().length();
+			System.out.println("'" + n.getData() + "' -- " + n.getFreq() + " -- '" + n.getCode() + "'");
 		}
 		int difference = (imageSize - bits);
 		float p1 = bits * 1f / imageSize;
