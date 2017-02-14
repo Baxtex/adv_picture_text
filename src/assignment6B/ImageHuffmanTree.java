@@ -152,7 +152,7 @@ public class ImageHuffmanTree {
 		int bits = 0;
 		for (Node n : nodeArray) {
 			bits += n.getFreq() * n.getCodeAsString().length();
-			System.out.println("'" + n.getData() + "' -- " + n.getFreq() + " -- '" + n.getCode() + "'");
+			System.out.println("'" + n.getData() + "' -- " + n.getFreq() + " -- '" + n.getCodeAsString() + "'");
 		}
 		int difference = (imageSize - bits);
 		float p1 = bits * 1f / imageSize;

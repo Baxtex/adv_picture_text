@@ -29,9 +29,6 @@ public class SuffixArray {
 			index[i] = i;
 			this.text[i] = text.substring(i, i + 1);
 		}
-		// System.out.println(" ");
-		// printArray();
-		System.out.println(" ");
 		build();
 	}
 
@@ -45,18 +42,13 @@ public class SuffixArray {
 			// Creates suffixes .
 			for (int txtI = i; txtI < length; txtI++) {
 				txt += text[txtI];
-				// System.out.println(txt);
 			}
 			// System.out.println("Adding suffix to array: " + txt);
 			suffix[i] = txt;
 		}
-		System.out.println("");
-		System.out.println("Before sorting:");
-		printArray();
 
 		// Now all suffixes are added to the suffix array. Now we need to sort
 		// them.
-		System.out.println(" ");
 		int y;
 		for (int x = 1; x < length; x++) {
 			String key = suffix[x]; // Each suffix, except the first.
@@ -64,19 +56,10 @@ public class SuffixArray {
 
 			// Then we loop from the beginning, starting at 0
 			for (y = x - 1; y >= 0; y--) {
-				// System.out.println("y- " + y);
 				if (suffix[y].compareTo(key) > 0) {
-					// System.out.println(suffix[y] + " is lexicographically
-					// less then " + key);
-					// System.out.println(suffix[y + 1] + " is set to " +
-					// suffix[y]);
 					suffix[y + 1] = suffix[y];
 					index[y + 1] = index[y];
 				} else {
-					// System.out.println(suffix[y] + " is lexicographically
-					// greater or equal " + key);
-					// System.out.println("Break, we have found the right
-					// place");
 					break;
 				}
 				// printArray();
@@ -93,23 +76,25 @@ public class SuffixArray {
 	/**
 	 * Finds and prints the longest prefix for the given string.
 	 * 
-	 * @param s
+	 * @param searchStr
 	 */
-	public void printLongestPrefix(String s) {
-		System.out.println("\nSearching for longest prefix for '" + s + "'");
+	public void printLongestPrefix(String searchStr) {
+		System.out.println("\nSearching for longest prefix for '" + searchStr + "'");
 
-		int prefixIndex = 0;
+		int prefixLength = 0;
 		String longestPrefix = "None";
+
 		for (int i = 0; i < suffix.length; i++) {
 
 			String currPrefix = suffix[i];
 
-			if (currPrefix.length() > 3 && currPrefix.contains(s)) {
+			if (currPrefix.length() > searchStr.length() && currPrefix.contains(searchStr)) {
 
-				int currPrefixIndex = currPrefix.indexOf(s);
-
-				if (currPrefixIndex > prefixIndex) {
+				int currPrefixIndex = currPrefix.lastIndexOf(searchStr);
+				
+				if (currPrefixIndex > prefixLength) {
 					longestPrefix = currPrefix.substring(0, currPrefixIndex);
+					prefixLength = longestPrefix.length();
 				}
 			}
 		}

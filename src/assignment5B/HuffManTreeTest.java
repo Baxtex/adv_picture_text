@@ -15,7 +15,6 @@ public class HuffManTreeTest {
 		System.out.println("Test 1");
 		HuffmanTree ht = new HuffmanTree("abcdefghcccc");
 		ht.printEncoding();
-
 	}
 
 	@Test
@@ -23,7 +22,6 @@ public class HuffManTreeTest {
 		System.out.println("Test 2");
 		HuffmanTree ht = new HuffmanTree("abcccccccdddddfgh");
 		ht.printEncoding();
-
 	}
 
 	@Test
@@ -31,6 +29,5 @@ public class HuffManTreeTest {
 		System.out.println("Test 3");
 		HuffmanTree ht = new HuffmanTree("Hejsan detta är ett test!");
 		ht.printEncoding();
-
 	}
 }

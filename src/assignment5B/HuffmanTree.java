@@ -64,14 +64,14 @@ public class HuffmanTree {
 	 * @param c - the code for the current node.
 	 */
 	private int encode(Node n, int c) {
-		
+
 		if (!n.isLeafNode()) {
 			// While going left append 0
-			c = c<< 1;
+			c = c << 1;
 			c = encode(n.getLeft(), c);
 			// while going right, append 1
-			 c = (c << 1) | 1;
-			 c =encode(n.getRight(), c);
+			c = (c << 1) | 1;
+			c = encode(n.getRight(), c);
 		} else {
 			// Set the code of the node.
 			n.setCode(c);
@@ -106,9 +106,9 @@ public class HuffmanTree {
 	}
 
 	/**
-	 * Just for pretty printing all the values.
-	 * Loops through the nodes and arrays to print their values. Also does some
-	 * calculations to show the number of bits and the percentage.
+	 * Just for pretty printing all the values. Loops through the nodes and
+	 * arrays to print their values. Also does some calculations to show the
+	 * number of bits and the percentage.
 	 */
 	public void printEncoding() {
 		int CHARSIZE = 16;
@@ -116,7 +116,7 @@ public class HuffmanTree {
 		Map<Character, String> ht = new Hashtable<>();
 		System.out.println("Char,  Freq,  Code");
 		for (Node n : nodeArray) {
-			bits += n.getFreq() * n.getCodeAsString().length(); 
+			bits += n.getFreq() * n.getCodeAsString().length();
 			System.out.println("'" + n.getData() + "' -- " + n.getFreq() + " -- '" + n.getCodeAsString() + "'");
 			ht.put(n.getData(), n.getCodeAsString());
 		}

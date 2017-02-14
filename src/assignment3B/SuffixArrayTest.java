@@ -19,7 +19,8 @@ public class SuffixArrayTest {
 	}
 
 	@Test
-	public void testSearch() {
+	public void testSearch1() {
 		st.printLongestPrefix("nan");
 	}
+
 }

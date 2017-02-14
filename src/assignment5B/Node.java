@@ -1,8 +1,8 @@
 package assignment5B;
 
 /**
- * One node in the Huffman tree. Has getters and setters and a implementation of the
- * Comparable interface so we can compare the nodes when in the heap.
+ * One node in the Huffman tree. Has getters and setters and a implementation of
+ * the Comparable interface so we can compare the nodes when in the heap.
  * 
  * @author Anton Gustafsson
  *
@@ -42,7 +42,7 @@ public class Node implements Comparable<Node> {
 	public int getCode() {
 		return code;
 	}
-	
+
 	public String getCodeAsString() {
 		return Integer.toBinaryString(code);
 	}
@@ -75,9 +75,9 @@ public class Node implements Comparable<Node> {
 		}
 		return -1;
 	}
-	
+
 	@Override
 	public String toString() {
-		return String.valueOf(data) +"     " + freq;
+		return String.valueOf(data) + "     " + freq;
 	}
 }
