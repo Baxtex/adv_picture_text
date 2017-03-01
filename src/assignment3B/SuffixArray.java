@@ -39,11 +39,10 @@ public class SuffixArray {
 		// Decides where the suffix starts.
 		for (int i = 0; i < length; i++) {
 			String txt = "";
-			// Creates suffixes .
+			// Creates suffixes.
 			for (int txtI = i; txtI < length; txtI++) {
 				txt += text[txtI];
 			}
-			// System.out.println("Adding suffix to array: " + txt);
 			suffix[i] = txt;
 		}
 
@@ -62,9 +61,8 @@ public class SuffixArray {
 				} else {
 					break;
 				}
-				// printArray();
 			}
-			// System.out.println("New loop");
+
 			suffix[y + 1] = key;
 			index[y + 1] = keyI;
 		}
@@ -91,7 +89,7 @@ public class SuffixArray {
 			if (currPrefix.length() > searchStr.length() && currPrefix.contains(searchStr)) {
 
 				int currPrefixIndex = currPrefix.lastIndexOf(searchStr);
-				
+
 				if (currPrefixIndex > prefixLength) {
 					longestPrefix = currPrefix.substring(0, currPrefixIndex);
 					prefixLength = longestPrefix.length();
@@ -111,19 +109,4 @@ public class SuffixArray {
 		}
 	}
 
-	/**
-	 * Prints the longestCommonPrefix array.
-	 * 
-	 * @param lcp
-	 */
-	private void prtLCP(int[] lcp) {
-		System.out.println("");
-		System.out.println("LCP array:");
-		System.out.println("Pos,  pref1,   pref2,    lcp:");
-		for (int i = 0; i < lcp.length; i++) {
-			System.out.println(i + "----" + "'" + suffix[i] + "' -------  '" + suffix[i + 1] + "' ------ " + lcp[i]);
-			if (i + 1 >= lcp.length - 1)
-				break;
-		}
-	}
 }

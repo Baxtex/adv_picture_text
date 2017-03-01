@@ -8,7 +8,7 @@ package assignment1;
  */
 public class StringSearch {
 	private int outerIterations, innerIterations;
-	private long totalNS;
+	private double totalNS;
 
 	/**
 	 * Calls the appropiate method to conduct a search of pattern in a text.
@@ -47,7 +47,7 @@ public class StringSearch {
 		totalNS += duration;
 		prtIterations();
 
-		System.out.println("Execution time in ns is : " + totalNS + "\n");
+		System.out.println("Execution time: "+ totalNS / 1000000f +" ms \n");
 	}
 
 	/**

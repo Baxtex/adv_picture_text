@@ -1,5 +1,10 @@
 package assignment1;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -9,21 +14,34 @@ import org.junit.Test;
  *
  */
 public class StringSearchTest {
-	String t = "aaaaaaaab";
-	String p = "aaaab";
+	String shortText = "aaaaaaaab";
+	String shortPattern = "aaaab";
+
+	String longText;
+	String longPattern;
+
+	@Before
+	public void longText() {
+		try {
+			longText = new String(Files.readAllBytes(Paths.get("src/assignment1/text2.txt")));
+			longPattern = new String(Files.readAllBytes(Paths.get("src/assignment1/pattern2.txt")));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Test
 	public void testNaive() {
-		StringSearch ss = StringSearches.naiveStringSearch(t, p);
+		StringSearches.naiveStringSearch(longText, longPattern);
 	}
 
 	@Test
 	public void testRabinKarp() {
-		StringSearch ss = StringSearches.rabinKarpSearch(t, p);
+		StringSearches.rabinKarpSearch(longText, longPattern);
 	}
 
 	@Test
 	public void testKnutMorrisPratt() {
-		StringSearch ss = StringSearches.kmpSearch(t, p);
+		StringSearches.kmpSearch(longText, longPattern);
 	}
 }
