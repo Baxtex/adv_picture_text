@@ -20,7 +20,7 @@ public class SuffixArrayTest {
 
 	@Test
 	public void testSearch1() {
-		st.printLongestPrefix("nan");
+		st.printLongestMatch("nan");
 	}
 
 }

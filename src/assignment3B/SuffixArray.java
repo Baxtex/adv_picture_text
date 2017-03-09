@@ -7,7 +7,8 @@ package assignment3B;
  *
  */
 public class SuffixArray {
-	private String[] suffix, text;
+	private String[] suffixArray, textArray;
+	private String str;
 	private int length;
 	private int[] index;
 
@@ -17,17 +18,18 @@ public class SuffixArray {
 	 * @param text
 	 */
 	public SuffixArray(String text) {
+		str = text;
 		System.out.println("String: " + text);
 		// setup variables
 		length = text.length();
 		index = new int[length];
-		suffix = new String[length];
+		suffixArray = new String[length];
 
 		// Copy the string to an array and put in indexes.
-		this.text = new String[length];
+		this.textArray = new String[length];
 		for (int i = 0; i < length; i++) {
 			index[i] = i;
-			this.text[i] = text.substring(i, i + 1);
+			this.textArray[i] = text.substring(i, i + 1);
 		}
 		build();
 	}
@@ -41,29 +43,29 @@ public class SuffixArray {
 			String txt = "";
 			// Creates suffixes.
 			for (int txtI = i; txtI < length; txtI++) {
-				txt += text[txtI];
+				txt += textArray[txtI];
 			}
-			suffix[i] = txt;
+			suffixArray[i] = txt;
 		}
 
 		// Now all suffixes are added to the suffix array. Now we need to sort
 		// them.
 		int y;
 		for (int x = 1; x < length; x++) {
-			String key = suffix[x]; // Each suffix, except the first.
+			String key = suffixArray[x]; // Each suffix, except the first.
 			int keyI = index[x]; // Each's suffix index.
 
 			// Then we loop from the beginning, starting at 0
 			for (y = x - 1; y >= 0; y--) {
-				if (suffix[y].compareTo(key) > 0) {
-					suffix[y + 1] = suffix[y];
+				if (suffixArray[y].compareTo(key) > 0) {
+					suffixArray[y + 1] = suffixArray[y];
 					index[y + 1] = index[y];
 				} else {
 					break;
 				}
 			}
 
-			suffix[y + 1] = key;
+			suffixArray[y + 1] = key;
 			index[y + 1] = keyI;
 		}
 		System.out.println("");
@@ -71,32 +73,70 @@ public class SuffixArray {
 		printArray();
 	}
 
+	public void printLongestMatch(String pattern) {
+		int i = longestMatchIndex(pattern);
+		System.out.println("\n" + pattern + " starts at " + i);
+		System.out.println(str.substring(0, i));
+	}
+
 	/**
-	 * Finds and prints the longest prefix for the given string.
+	 * Returns the index of the longest occuring prefix of the given pattern.
+	 * This is done by binary searching the suffixes in this suffix array.
 	 * 
-	 * @param searchStr
+	 * @param pattern the pattern to search for.
+	 * @return the index where the longest prefix occurs.
 	 */
-	public void printLongestPrefix(String searchStr) {
-		System.out.println("\nSearching for longest prefix for '" + searchStr + "'");
 
-		int prefixLength = 0;
-		String longestPrefix = "None";
+	private int longestMatchIndex(String pattern) {
 
-		for (int i = 0; i < suffix.length; i++) {
+		int start = 0;
+		int end = index.length - 1;
+		int mid, res;
 
-			String currPrefix = suffix[i];
+		while (start <= end) {
 
-			if (currPrefix.length() > searchStr.length() && currPrefix.contains(searchStr)) {
+			mid = (end + start) / 2;
+			res = compare(pattern, index[mid]);
 
-				int currPrefixIndex = currPrefix.lastIndexOf(searchStr);
-
-				if (currPrefixIndex > prefixLength) {
-					longestPrefix = currPrefix.substring(0, currPrefixIndex);
-					prefixLength = longestPrefix.length();
-				}
+			if (res < 0) {
+				end = mid - 1;
+			}
+			if (res > 0) {
+				start = mid + 1;
+			}
+			if (res == 0) {
+				return index[mid];
 			}
 		}
-		System.out.println("Longest prefix is '" + longestPrefix + "'");
+
+		if (str.charAt(index[start - 1]) != pattern.charAt(0)) {
+			return -1;
+		}
+
+		return index[start - 1];
+	}
+
+	/**
+	 * Compares pattern to suffix. Returns 0 if pattern is a true prefix of
+	 * suffix, < 0 if pattern i lexographically lower than suffix, and > 0 if
+	 * pattern is higher.
+	 * 
+	 * @param pattern the pattern
+	 * @param suffixArray the suffix
+	 * @return
+	 */
+	public int compare(String pattern, int suffixIndex) {
+		String suffix = str.substring(suffixIndex);
+		int length = Math.min(pattern.length(), suffix.length());
+		for (int i = 0; i < length; i++) {
+			if (pattern.charAt(i) != suffix.charAt(i)) {
+				return pattern.charAt(i) - suffix.charAt(i);
+			}
+		}
+		if (suffix.length() < pattern.length()) {
+			return 1;
+		}
+		return 0;
 	}
 
 	/**
@@ -105,8 +145,7 @@ public class SuffixArray {
 	public void printArray() {
 		System.out.println("Position, Suffix, suffix start pos");
 		for (int i = 0; i < length; i++) {
-			System.out.println(i + " --------- " + suffix[i] + " --------- " + index[i]);
+			System.out.println(i + " --------- " + suffixArray[i] + " --------- " + index[i]);
 		}
 	}
-
 }
