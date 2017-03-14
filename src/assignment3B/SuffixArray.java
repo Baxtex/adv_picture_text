@@ -73,10 +73,27 @@ public class SuffixArray {
 		printArray();
 	}
 
+	/**
+	 * Prints the index and longest prefix from given pattern.
+	 * 
+	 * @param pattern
+	 */
 	public void printLongestMatch(String pattern) {
-		int i = longestMatchIndex(pattern);
-		System.out.println("\n" + pattern + " starts at " + i);
-		System.out.println(str.substring(0, i));
+		int i = -1;
+
+		pattern = pattern.substring(0, pattern.length() - 1);
+		i = longestMatchIndex(pattern);
+
+		while (i == -1 && pattern.length() != 0) {
+			pattern = pattern.substring(0, pattern.length() - 1);
+			i = longestMatchIndex(pattern);
+		}
+
+		if (i == -1) {
+			System.out.println("Not found");
+		} else {
+			System.out.println("\n" + pattern + " starts at " + i + ", prefix is '" + (str.substring(0, i) + "'"));
+		}
 	}
 
 	/**
@@ -109,7 +126,9 @@ public class SuffixArray {
 			}
 		}
 
+		// If pattern isn't found
 		if (str.charAt(index[start - 1]) != pattern.charAt(0)) {
+
 			return -1;
 		}
 
@@ -120,20 +139,17 @@ public class SuffixArray {
 	 * Compares pattern to suffix. Returns 0 if pattern is a true prefix of
 	 * suffix, < 0 if pattern i lexographically lower than suffix, and > 0 if
 	 * pattern is higher.
-	 * 
-	 * @param pattern the pattern
-	 * @param suffixArray the suffix
-	 * @return
 	 */
 	public int compare(String pattern, int suffixIndex) {
-		String suffix = str.substring(suffixIndex);
-		int length = Math.min(pattern.length(), suffix.length());
-		for (int i = 0; i < length; i++) {
+		String suffix = str.substring(suffixIndex); // The current suffix
+		int smallestLength = Math.min(pattern.length(), suffix.length());
+		for (int i = 0; i < smallestLength; i++) {
 			if (pattern.charAt(i) != suffix.charAt(i)) {
 				return pattern.charAt(i) - suffix.charAt(i);
 			}
 		}
 		if (suffix.length() < pattern.length()) {
+
 			return 1;
 		}
 		return 0;

@@ -13,14 +13,18 @@ public class SuffixArrayTest {
 
 	private SuffixArray st;
 
-	@Before
-	public void setUp() {
-		st = new SuffixArray("banana");
+	@Test
+	public void testSearch1() {
+		st = new SuffixArray("lexographically lower");
+		st.printLongestMatch("callx");
 	}
 
 	@Test
-	public void testSearch1() {
-		st.printLongestMatch("nan");
+	public void testSearch2() {
+		st = new SuffixArray("banana");
+		st.printLongestMatch("nanx");
 	}
+	
+
 
 }
