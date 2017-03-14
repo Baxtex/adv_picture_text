@@ -17,17 +17,17 @@ public class HuffManTreeTest {
 		ht.printEncoding();
 	}
 
-//	@Test
-//	public void testSearch2() {
-//		System.out.println("Test 2");
-//		HuffmanTree ht = new HuffmanTree("abcccccccdddddfgh");
-//		ht.printEncoding();
-//	}
-//
-//	@Test
-//	public void testSearch3() {
-//		System.out.println("Test 3");
-//		HuffmanTree ht = new HuffmanTree("Hejsan detta är ett test!");
-//		ht.printEncoding();
-//	}
+	@Test
+	public void testSearch2() {
+		System.out.println("Test 2");
+		HuffmanTree ht = new HuffmanTree("abcdefghhhh");
+		ht.printEncoding();
+	}
+
+	@Test
+	public void testSearch3() {
+		System.out.println("Test 3");
+		HuffmanTree ht = new HuffmanTree("abcdefghijklmno");
+		ht.printEncoding();
+	}
 }

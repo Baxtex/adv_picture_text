@@ -28,6 +28,8 @@ public class Node implements Comparable<Node> {
 		this.right = right;
 	}
 
+	
+
 	public char getData() {
 		return data;
 	}
@@ -46,16 +48,12 @@ public class Node implements Comparable<Node> {
 
 	public String getCodeAsString() {
 
-
-
 		String str = Integer.toBinaryString(code);
 		String leadZero = "";
-	
-		for (int i = str.length(); i < length; i++ ) {
+
+		for (int i = str.length(); i < length; i++) {
 			leadZero += "0";
 		}
-//		System.out.println("Leading zeros: " +leadZero + " The binary string: " + str + " length " + length);
-
 		return leadZero + str;
 	}
 
@@ -83,13 +81,12 @@ public class Node implements Comparable<Node> {
 	@Override
 	public int compareTo(Node o) {
 		if (o instanceof Node) {
-			return freq - ((Node) o).freq;
+			return freq - o.freq;
 		}
 		return -1;
 	}
 
 	public void setLength(int length2) {
-		this.length=length2;
-		
+		this.length = length2;
 	}
 }

@@ -67,31 +67,23 @@ public class HuffmanTree {
 	private int encode(Node n, int c) {
 
 		if (!n.isLeafNode()) {
-			System.out.println("COUNTED");
 			length++;
-
-
 			// While going left append 0
 			c = c << 1;
 			c = encode(n.getLeft(), c);
 			// while going right, append 1
 			length++;
- 			c = (c << 1) | 1;
+			c = (c << 1) | 1;
 			c = encode(n.getRight(), c);
-			
+
 		} else {
 			// Set the code of the node.
-			System.out.println("The code as int " + c + " and the length is " + length + "  char is " + n.getData());
 			n.setLength(length);
 			n.setCode(c);
-
-	
 		}
 		length--;
 		return c >> 1;
 	}
-	
-	
 
 	/**
 	 * Finds occurencess of each letter in the given string and initializes the

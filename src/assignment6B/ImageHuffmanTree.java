@@ -30,6 +30,7 @@ public class ImageHuffmanTree {
 	private List<Integer> pixels;
 	private int[] pixelArr, pixelFreq;
 	private int imageSize;
+	private int length;
 
 	/**
 	 * Constructor that initializes variables and arrays.
@@ -130,16 +131,20 @@ public class ImageHuffmanTree {
 	private int encode(Node n, int c) {
 
 		if (!n.isLeafNode()) {
+			length++;
 			// While going left append 0
 			c = c << 1;
 			c = encode(n.getLeft(), c);
 			// while going right, append 1
+			length++;
 			c = (c << 1) | 1;
 			c = encode(n.getRight(), c);
 		} else {
 			// Set the code of the node.
+			n.setLength(length);
 			n.setCode(c);
 		}
+		length--;
 		return c >> 1;
 	}
 
@@ -151,8 +156,9 @@ public class ImageHuffmanTree {
 		System.out.println("color   Freq    Code   ");
 		int bits = 0;
 		for (Node n : nodeArray) {
-			bits += n.getFreq() * n.getCodeAsString().length();
-			System.out.println("'" + n.getData() + "' -- " + n.getFreq() + " -- '" + n.getCodeAsString() + "'");
+			String s = n.getCodeAsString();
+			bits += n.getFreq() * s.length();
+			System.out.println("'" + n.getData() + "' -- " + n.getFreq() + " -- '" + s + "'");
 		}
 		int difference = (imageSize - bits);
 		float p1 = bits * 1f / imageSize;

@@ -14,6 +14,7 @@ public class Node implements Comparable<Node> {
 	private Node left;
 	private Node right;
 	private int code = -1;
+	private int length = 0;
 
 	public Node(int data, int freq) {
 		this.data = data;
@@ -44,7 +45,14 @@ public class Node implements Comparable<Node> {
 	}
 
 	public String getCodeAsString() {
-		return Integer.toBinaryString(code);
+
+		String str = Integer.toBinaryString(code);
+		String leadZero = "";
+
+		for (int i = str.length(); i < length; i++) {
+			leadZero += "0";
+		}
+		return leadZero + str;
 	}
 
 	public void setCode(int code) {
@@ -71,8 +79,13 @@ public class Node implements Comparable<Node> {
 	@Override
 	public int compareTo(Node o) {
 		if (o instanceof Node) {
-			return freq - ((Node) o).freq;
+			return freq - o.freq;
 		}
 		return -1;
+	}
+
+	public void setLength(int length) {
+		// TODO Auto-generated method stub
+
 	}
 }

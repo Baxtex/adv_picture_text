@@ -1,6 +1,5 @@
 package assignment3B;
 
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -24,7 +23,5 @@ public class SuffixArrayTest {
 		st = new SuffixArray("banana");
 		st.printLongestMatch("nanx");
 	}
-	
-
 
 }
