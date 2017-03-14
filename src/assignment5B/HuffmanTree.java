@@ -14,6 +14,7 @@ public class HuffmanTree {
 	private String s;
 	private char chars[];
 	private int freqs[];
+	private int length;
 
 	/**
 	 * Constructor that initializes variables and arrays.
@@ -66,18 +67,31 @@ public class HuffmanTree {
 	private int encode(Node n, int c) {
 
 		if (!n.isLeafNode()) {
+			System.out.println("COUNTED");
+			length++;
+
+
 			// While going left append 0
 			c = c << 1;
 			c = encode(n.getLeft(), c);
 			// while going right, append 1
-			c = (c << 1) | 1;
+			length++;
+ 			c = (c << 1) | 1;
 			c = encode(n.getRight(), c);
+			
 		} else {
 			// Set the code of the node.
+			System.out.println("The code as int " + c + " and the length is " + length + "  char is " + n.getData());
+			n.setLength(length);
 			n.setCode(c);
+
+	
 		}
+		length--;
 		return c >> 1;
 	}
+	
+	
 
 	/**
 	 * Finds occurencess of each letter in the given string and initializes the
@@ -111,14 +125,16 @@ public class HuffmanTree {
 	 * number of bits and the percentage.
 	 */
 	public void printEncoding() {
+		System.out.println("Printing encoding...");
 		int CHARSIZE = 16;
 		int bits = 0;
 		Map<Character, String> ht = new Hashtable<>();
 		System.out.println("Char,  Freq,  Code");
 		for (Node n : nodeArray) {
-			bits += n.getFreq() * n.getCodeAsString().length();
-			System.out.println("'" + n.getData() + "' -- " + n.getFreq() + " -- '" + n.getCodeAsString() + "'");
-			ht.put(n.getData(), n.getCodeAsString());
+			String str = n.getCodeAsString();
+			bits += n.getFreq() * str.length();
+			System.out.println("'" + n.getData() + "' -- " + n.getFreq() + " -- '" + str + "'");
+			ht.put(n.getData(), str);
 		}
 		System.out.println("'" + s + "'" + " is encoded as:");
 		char[] arr = s.toCharArray();
