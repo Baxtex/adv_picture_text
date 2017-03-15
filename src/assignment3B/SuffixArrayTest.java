@@ -23,5 +23,4 @@ public class SuffixArrayTest {
 		st = new SuffixArray("banana");
 		st.printLongestMatch("nanx");
 	}
-
 }

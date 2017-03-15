@@ -19,12 +19,11 @@ public class SuffixArray {
 	 */
 	public SuffixArray(String text) {
 		str = text;
-		System.out.println("String: " + text);
+		System.out.println("String to build: '" + text + "'");
 		// setup variables
 		length = text.length();
 		index = new int[length];
 		suffixArray = new String[length];
-
 		// Copy the string to an array and put in indexes.
 		this.textArray = new String[length];
 		for (int i = 0; i < length; i++) {
@@ -64,12 +63,9 @@ public class SuffixArray {
 					break;
 				}
 			}
-
 			suffixArray[y + 1] = key;
 			index[y + 1] = keyI;
 		}
-		System.out.println("");
-		System.out.println("After sorting:");
 		printArray();
 	}
 
@@ -81,19 +77,18 @@ public class SuffixArray {
 	public void printLongestMatch(String pattern) {
 		int i = -1;
 
-		pattern = pattern.substring(0, pattern.length() - 1);
 		i = longestMatchIndex(pattern);
 
 		while (i == -1 && pattern.length() != 0) {
 			pattern = pattern.substring(0, pattern.length() - 1);
 			i = longestMatchIndex(pattern);
 		}
-
 		if (i == -1) {
-			System.out.println("Not found");
+			System.out.println("PLM: Not found");
 		} else {
-			System.out.println("\n" + pattern + " starts at " + i + ", prefix is '" + (str.substring(0, i) + "'"));
+			System.out.println("PLM: Starts at position " + i + ", prefix is '" + (str.substring(0, i) + "'"));
 		}
+		System.out.println("");
 	}
 
 	/**
@@ -128,7 +123,6 @@ public class SuffixArray {
 
 		// If pattern isn't found
 		if (str.charAt(index[start - 1]) != pattern.charAt(0)) {
-
 			return -1;
 		}
 
@@ -142,6 +136,7 @@ public class SuffixArray {
 	 */
 	public int compare(String pattern, int suffixIndex) {
 		String suffix = str.substring(suffixIndex); // The current suffix
+
 		int smallestLength = Math.min(pattern.length(), suffix.length());
 		for (int i = 0; i < smallestLength; i++) {
 			if (pattern.charAt(i) != suffix.charAt(i)) {
@@ -149,7 +144,6 @@ public class SuffixArray {
 			}
 		}
 		if (suffix.length() < pattern.length()) {
-
 			return 1;
 		}
 		return 0;
