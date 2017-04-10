@@ -11,6 +11,11 @@ public class SuffixArray {
 	private String str;
 	private int length;
 	private int[] index;
+	
+	public static void main(String[] args) {
+		SuffixArray st = new SuffixArray("lexographically lower");
+		st.printLongestMatch("calle");
+		}
 
 	/**
 	 * Initilizes the arrays.

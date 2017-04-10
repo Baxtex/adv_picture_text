@@ -19,6 +19,6 @@ public class ImageHuffManTreeTest {
 	@Test
 	public void testImageHFT2() {
 		System.out.println("Test2");
-		new ImageHuffmanTree("blackWhite.jpg");
+		new ImageHuffmanTree("white_black.jpg");
 	}
 }
