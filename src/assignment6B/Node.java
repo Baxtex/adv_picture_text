@@ -9,10 +9,8 @@ package assignment6B;
  */
 public class Node implements Comparable<Node> {
 
-	private int data;
-	private int freq;
-	private Node left;
-	private Node right;
+	private int data, freq;
+	private Node left, right;
 	private int code = -1;
 	private int length = 0;
 
@@ -44,17 +42,6 @@ public class Node implements Comparable<Node> {
 		return code;
 	}
 
-	public String getCodeAsString() {
-
-		String str = Integer.toBinaryString(code);
-		String leadZero = "";
-
-		for (int i = str.length(); i < length; i++) {
-			leadZero += "0";
-		}
-		return leadZero + str;
-	}
-
 	public void setCode(int code) {
 		this.code = code;
 	}
@@ -83,9 +70,19 @@ public class Node implements Comparable<Node> {
 		}
 		return -1;
 	}
+	
+	/**
+	 * Override ToString method to pretty print.
+	 * @return
+	 */
+	public String ToString() {
 
-	public void setLength(int length) {
-		// TODO Auto-generated method stub
+		String str = Integer.toBinaryString(code);
+		String leadZero = "";
 
+		for (int i = str.length(); i < length; i++) {
+			leadZero += "0";
+		}
+		return leadZero + str;
 	}
 }

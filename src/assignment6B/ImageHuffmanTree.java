@@ -29,16 +29,15 @@ public class ImageHuffmanTree {
 	private Node[] nodeArray;
 	private List<Integer> pixels;
 	private int[] pixelArr, pixelFreq;
-	private int imageSize;
-	private int length;
+	private int imageSize, length;
 
 	/**
 	 * Constructor that initializes variables and arrays.
 	 */
 	public ImageHuffmanTree(String url) {
-		System.out.println("picture to encode: " + url);
+		System.out.println("image to encode: " + url);
 		this.url = url;
-		saveColors();
+		calculateColors();
 		nodeArray = new Node[pixelArr.length];
 		pq = new PriorityQueue<Node>(pixelFreq.length);
 		// Create Nodes from the color values and occurrences and put them in a
@@ -57,7 +56,7 @@ public class ImageHuffmanTree {
 	 * @param contrast
 	 * @param brightness
 	 */
-	private void saveColors() {
+	private void calculateColors() {
 		BufferedImage img = readImage(url);
 		int width = img.getWidth();
 		int height = img.getHeight();
@@ -72,13 +71,13 @@ public class ImageHuffmanTree {
 				pixels.add(inraster.getSample(i, j, 1));
 				pixels.add(inraster.getSample(i, j, 2));
 			}
-		countColors();
+		countOccurences();
 	}
 
 	/**
 	 * Counts occurences and removes duplicates
 	 */
-	private void countColors() {
+	private void countOccurences() {
 		List<Integer> duplicateRemoved;
 		duplicateRemoved = new ArrayList<Integer>(pixels);
 
@@ -98,6 +97,9 @@ public class ImageHuffmanTree {
 		}
 	}
 
+	/**
+	 * Build the huffman tree with the help of a heap.
+	 */
 	private void buildTree() {
 		Node left, right, top;
 		// Put the Nodes from the node array in a min-heap/priorityQueue.
@@ -122,7 +124,7 @@ public class ImageHuffmanTree {
 	}
 
 	/**
-	 * Set's the encoding for every node by depth first traversal through the
+	 * Sets the encoding for every node by depth first traversal through the
 	 * tree. Used recursivly and using bitwise operators.
 	 * 
 	 * @param n - the current node.
@@ -141,7 +143,6 @@ public class ImageHuffmanTree {
 			c = encode(n.getRight(), c);
 		} else {
 			// Set the code of the node.
-			n.setLength(length);
 			n.setCode(c);
 		}
 		length--;
@@ -149,35 +150,32 @@ public class ImageHuffmanTree {
 	}
 
 	/**
-	 * Loops through the nodes and arrays to print their values. Also does some
+	 * Loops through the nodes and arrays to pretty print their values. Also does some
 	 * calculations to show the number of bits and the percentage.
 	 */
 	public void printEncoding() {
 		System.out.println("color   Freq    Code   ");
 		int bits = 0;
 		for (Node n : nodeArray) {
-			String s = n.getCodeAsString();
+			String s = n.ToString();
 			bits += n.getFreq() * s.length();
-			System.out.println("'" + n.getData() + "' -- " + n.getFreq() + " -- '" + s + "'");
+			System.out.println("" + n.getData() + " :: " + n.getFreq() + " :: " + s + "");
 		}
 		int difference = (imageSize - bits);
-		float p1 = bits * 1f / imageSize;
 		float p2 = (1 - (bits * 1f / imageSize)) * 100;
 		System.out.println("Image: '" + url + "'");
-		System.out.println("original  compressed  difference  percent saved");
-		System.out.println(imageSize + "--" + bits + "---" + difference + "--" + p2 + "%");
-		System.out.println("\n\n");
+		System.out.println("original : compressed : difference :  percent saved");
+		System.out.println(imageSize + "::" + bits + "::" + difference + "::" + p2 + "%\n");
 	}
 
 	/**
-	 * Uses a URL to read an image into a file.
+	 * Uses a URL to read an image into a file object.
 	 * 
 	 * @param URL - the filepath of the image.
 	 * @return BufferedImage - a BufferedImage object of an image.
 	 */
 	private BufferedImage readImage(String URL) {
 		BufferedImage img = null;
-
 		URL defaultImage = ImageHuffmanTree.class.getResource(URL);
 		try {
 			File file = new File(defaultImage.toURI());

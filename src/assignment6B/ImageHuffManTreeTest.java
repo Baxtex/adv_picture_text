@@ -12,13 +12,13 @@ public class ImageHuffManTreeTest {
 
 	@Test
 	public void testImageHFT1() {
-		System.out.println("Test1");
+		System.out.println("-Test1-");
 		new ImageHuffmanTree("ernst_pic1.jpg");
 	}
 
 	@Test
 	public void testImageHFT2() {
-		System.out.println("Test2");
+		System.out.println("-Test2-");
 		new ImageHuffmanTree("white_black.jpg");
 	}
 }
