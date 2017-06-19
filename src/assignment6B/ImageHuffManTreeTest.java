@@ -10,15 +10,17 @@ import org.junit.Test;
  */
 public class ImageHuffManTreeTest {
 
+	//Tests encoding an image with many colurs
 	@Test
 	public void testImageHFT1() {
-		System.out.println("-Test1-");
-		new ImageHuffmanTree("ernst_pic1.jpg");
+		System.out.println("Test1-Complex image");
+		new ImageHuffmanTree("bc1.jpg");
 	}
 
+	//Tests encoding an image with few colors.
 	@Test
 	public void testImageHFT2() {
-		System.out.println("-Test2-");
+		System.out.println("Test2-Simple image");
 		new ImageHuffmanTree("white_black.jpg");
 	}
 }

@@ -50,7 +50,61 @@ public class ImageHuffmanTree {
 	}
 
 	/**
-	 * Builds the arrays.
+	 * Build the huffman tree with the help of a heap.
+	 */
+	private void buildTree() {
+		Node left, right, top;
+		// Put the Nodes from the node array in a min-heap/priorityQueue.
+		for (int i = 0; i < nodeArray.length; i++) {
+			pq.add(nodeArray[i]);
+		}
+		// Find two trees with least freq and creates a new node and inserts it.
+		while (pq.size() > 1) {
+			left = pq.remove();
+			right = pq.remove();
+			int newFreq = left.getFreq() + right.getFreq();
+			top = new Node('$', newFreq, left, right);
+			pq.add(top);
+		}
+		// Now the min heap only contains one node with the character $
+		// and it has all the other nodes as children.
+		// It's frequency should be the same as the total
+		// number of characters in the string.
+		// This is our complete tree.
+		encode(pq.remove(), 0);
+	}
+
+	/**
+	 * Sets the encoding for every node by depth first traversal through the
+	 * tree. Used recursivly and using bitwise operators.
+	 * 
+	 * @param n
+	 *            - the current node.
+	 * @param c
+	 *            - the code for the current node.
+	 */
+	private int encode(Node n, int c) {
+
+		if (!n.isLeafNode()) {
+			length++;
+			// While going left append 0
+			c = c << 1;
+			c = encode(n.getLeft(), c);
+			// while going right, append 1
+			length++;
+			c = (c << 1) | 1;
+			c = encode(n.getRight(), c);
+		} else {
+			// Set the code of the node.
+			n.setLength(length);
+			n.setCode(c);
+		}
+		length--;
+		return c >> 1;
+	}
+
+	/**
+	 * Builds a list containing all three color values.
 	 * 
 	 * @param URL
 	 * @param contrast
@@ -75,12 +129,10 @@ public class ImageHuffmanTree {
 	}
 
 	/**
-	 * Counts occurences and removes duplicates
+	 * Counts each color and then removes them. Builds two arrays that contain the freq and color.
 	 */
 	private void countOccurences() {
-		List<Integer> duplicateRemoved;
-		duplicateRemoved = new ArrayList<Integer>(pixels);
-
+		List<Integer> duplicateRemoved = new ArrayList<Integer>(pixels);
 		Set<Integer> hs = new HashSet<Integer>();
 		hs.addAll(duplicateRemoved);
 		duplicateRemoved.clear();
@@ -98,60 +150,8 @@ public class ImageHuffmanTree {
 	}
 
 	/**
-	 * Build the huffman tree with the help of a heap.
-	 */
-	private void buildTree() {
-		Node left, right, top;
-		// Put the Nodes from the node array in a min-heap/priorityQueue.
-		for (int i = 0; i < nodeArray.length; i++) {
-			pq.add(nodeArray[i]);
-		}
-
-		// Find two trees with least freq and creates a new node and inserts it.
-		while (pq.size() > 1) {
-			left = pq.remove();
-			right = pq.remove();
-			int newFreq = left.getFreq() + right.getFreq();
-			top = new Node('$', newFreq, left, right);
-			pq.add(top);
-		}
-		// Now the min heap only contains one node with the character $
-		// and it has all the other nodes as children.
-		// It's frequency should be the same as the total
-		// number of characters in the string.
-		// This is our complete tree.
-		encode(pq.remove(), 0);
-	}
-
-	/**
-	 * Sets the encoding for every node by depth first traversal through the
-	 * tree. Used recursivly and using bitwise operators.
-	 * 
-	 * @param n - the current node.
-	 * @param c - the code for the current node.
-	 */
-	private int encode(Node n, int c) {
-
-		if (!n.isLeafNode()) {
-			length++;
-			// While going left append 0
-			c = c << 1;
-			c = encode(n.getLeft(), c);
-			// while going right, append 1
-			length++;
-			c = (c << 1) | 1;
-			c = encode(n.getRight(), c);
-		} else {
-			// Set the code of the node.
-			n.setCode(c);
-		}
-		length--;
-		return c >> 1;
-	}
-
-	/**
-	 * Loops through the nodes and arrays to pretty print their values. Also does some
-	 * calculations to show the number of bits and the percentage.
+	 * Loops through the nodes and arrays to pretty print their values. Also
+	 * does some calculations to show the number of bits and the percentage.
 	 */
 	public void printEncoding() {
 		System.out.println("color   Freq    Code   ");

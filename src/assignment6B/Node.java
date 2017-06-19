@@ -50,6 +50,9 @@ public class Node implements Comparable<Node> {
 		return freq;
 	}
 
+	public void setLength(int length) {
+		this.length = length;
+	}
 	/**
 	 * If left or right child is null, this is a leaf.
 	 * 
@@ -72,7 +75,7 @@ public class Node implements Comparable<Node> {
 	}
 	
 	/**
-	 * Override ToString method to pretty print.
+	 * Override ToString method to pretty print this node's data.
 	 * @return
 	 */
 	public String ToString() {
