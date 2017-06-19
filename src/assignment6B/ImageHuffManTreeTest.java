@@ -14,7 +14,7 @@ public class ImageHuffManTreeTest {
 	@Test
 	public void testImageHFT1() {
 		System.out.println("Test1-Complex image");
-		new ImageHuffmanTree("bc1.jpg");
+		new ImageHuffmanTree("ernst_pic1.png");
 	}
 
 	//Tests encoding an image with few colors.
